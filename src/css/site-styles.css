@@ -1,0 +1,42 @@
+/* line 1, ../sass/partials/_main.sass */
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 6, ../sass/partials/_main.sass */
+html {
+  height: 100%;
+}
+
+/* line 9, ../sass/partials/_main.sass */
+body {
+  background: #333;
+  padding: 1em;
+}
+
+/* line 14, ../sass/partials/_main.sass */
+h1 {
+  color: #ccc;
+  font-family: arial, sans-serif;
+}
+
+/* line 18, ../sass/partials/_main.sass */
+p {
+  color: #ccc;
+  font-family: arial, sans-serif;
+}
+
+/* line 22, ../sass/partials/_main.sass */
+button {
+  background: #666;
+  color: #ccc;
+  cursor: pointer;
+}
+
+/* line 28, ../sass/partials/_main.sass */
+.special {
+  color: yellow;
+  font-family: arial, sans-serif;
+}
