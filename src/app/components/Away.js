@@ -20,7 +20,7 @@ export class AwayScrn extends React.Component {
                return false;
              }
 
-              displayObj = {
+            var displayObj = {
                   london: this.props.londonData,
                   dubai: this.props.dubaiData,
                   singapore: this.props.singapore
