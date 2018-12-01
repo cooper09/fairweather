@@ -6,51 +6,49 @@ import  axios from "axios";
 
 import { MyChild } from "./components/MyChild";
 import { SecondChild } from "./components/SecondChild";
-//import { getLocalData } from "./utils/getLocalAPI";
 import { MyListView } from "./components/MyListView";
+
+import { LocalScrn } from "./components/Local";
+import { AwayScrn } from "./components/Away";
 
 class App extends React.Component {
 
 	constructor(props){
 		super();
 		this.state = {
-			lat:0,
-			long:0
+			local:true,
+			away:false
 		}
 	}//end constructor
-
-	getLocation() {
-		console.log("we are at ground zero");
-		navigator.geolocation.getCurrentPosition(
-			function success(position) {
-				var lat, long;
-			  // for when getting location is a success
-			  console.log('latitude', position.coords.latitude, 
-						  'longitude', position.coords.longitude);
-
-
-			//this.setState({ lat : position.coords.latitude, long: position.coords.longitude });
-			});
-	}
 
 	componentDidMount() {
         //this.getLocation();
       }
 
 	render() {
-		console.log("lat: ", this.state.lat );
+		var local = true;
+		var away = false;
 
 		return (
 			<div className="container">
 						
 				<h1>Fair Weather Friend</h1>
 				<button onClick={getLocation.bind(this)}>Where you are</button>	
-				<button>Where you wanna be</button>			
+				<button onClick={getAway.bind(this)}>Where you wanna be</button>	
+
+				<LocalScrn visible={this.state.local} />
+				<AwayScrn visible={this.state.away}/>		
 			</div>
 			)
 
+			function getAway() {
+				console.log("And the boyz from Brazil??");
+				this.setState({  local: false, away: true });
+			}//end getAway
+
 			function getLocation() {
 				console.log("we are at ground zero");
+				
 				navigator.geolocation.getCurrentPosition(
 					function success(position) {
 						var lat, long;
@@ -66,11 +64,13 @@ class App extends React.Component {
 					getLocalData(coordObj).then (
 						(data) => {
 							console.log("Heres our data: ", data );
-
+						
 						}
-					)
-					
+					  )
 					});//end geolocation
+
+				this.setState({  local: true, away: false });
+					
 			}//end getLocation
 
 

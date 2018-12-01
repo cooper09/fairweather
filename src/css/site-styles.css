@@ -40,3 +40,9 @@ button {
   color: yellow;
   font-family: arial, sans-serif;
 }
+
+.mainScrn {
+  height: 300px; 
+  width: 800px;
+  background: #eee;
+}
