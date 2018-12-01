@@ -6,7 +6,7 @@ import  axios from "axios";
 
 import { MyChild } from "./components/MyChild";
 import { SecondChild } from "./components/SecondChild";
-//import { getLocalData } from "../utils/getLocalAPI";
+//import { getLocalData } from "./utils/getLocalAPI";
 import { MyListView } from "./components/MyListView";
 
 class App extends React.Component {
@@ -58,9 +58,6 @@ class App extends React.Component {
 					  console.log('latitude', position.coords.latitude, 
 								  'longitude', position.coords.longitude);
 						//call API for goodies
-						//const BASE_URL = 'api.openweathermap.org/data/2.5/weather?lat=35&lon=139&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
-					//const mydata =  getLocalData();
-
 					var coordObj = {
 						"latitude" : position.coords.latitude,
 						"longitude" : position.coords.longitude
@@ -69,6 +66,7 @@ class App extends React.Component {
 					getLocalData(coordObj).then (
 						(data) => {
 							console.log("Heres our data: ", data );
+
 						}
 					)
 					
@@ -76,11 +74,14 @@ class App extends React.Component {
 			}//end getLocation
 
 
-function getLocalData() {
-  console.log('getLocalData: ');
-  const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+function getLocalData(coords) {
+  console.log('getLocalData: ', coords );
+  const lat = coords.latitude;
+  const long = coords.longitude;
+
+  const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+long+'&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
   const url = `${BASE_URL}` ;
-  console.log('Dirt Cheap: ', axios.get(url).then(response => response.data) )
+  //console.log('Dirt Cheap: ', axios.get(url).then(response => response.data) )
   return axios.get(url).then(response => response.data);
 }
 			
