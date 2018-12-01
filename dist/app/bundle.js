@@ -106,15 +106,8 @@
 					_react2.default.createElement(
 						"h1",
 						null,
-						"My React App"
-					),
-					_react2.default.createElement(_MyChild.MyChild, { initialName: "Homer",
-						parentGreeting: this.parentGreeting, changeName: this.onChangeChildName.bind(this) }),
-					_react2.default.createElement("br", null),
-					_react2.default.createElement("hr", null),
-					_react2.default.createElement(_SecondChild.SecondChild, {
-						name: this.state.secondChildName }),
-					_react2.default.createElement(_MyListView.MyListView, null)
+						"Fair Weather Friend"
+					)
 				);
 			} //end render
 	

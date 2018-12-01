@@ -2,46 +2,65 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { MyChild } from "./components/MyChild"
-import { SecondChild } from "./components/SecondChild"
+//import { axios }   from "axios";
 
-import { MyListView } from "./components/MyListView"
+import { MyChild } from "./components/MyChild";
+import { SecondChild } from "./components/SecondChild";
+//import { getLocalData } from "../utils/getLocalAPI";
+import { MyListView } from "./components/MyListView";
 
 class App extends React.Component {
 
 	constructor(props){
 		super();
 		this.state = {
-			secondChildName: "Gertrude"
+			lat:0,
+			long:0
 		}
 	}//end constructor
-	
-	parentGreeting(){
-		alert("From the Parent");
+
+	getLocation() {
+		console.log("we are at ground zero");
+		navigator.geolocation.getCurrentPosition(
+			function success(position) {
+				var lat, long;
+			  // for when getting location is a success
+			  console.log('latitude', position.coords.latitude, 
+						  'longitude', position.coords.longitude);
+
+
+			//this.setState({ lat : position.coords.latitude, long: position.coords.longitude });
+			});
 	}
 
-	onChangeChildName(newName) {
-		this.setState({
-			secondChildName: newName
-		});	
-	}
+	componentDidMount() {
+        //this.getLocation();
+      }
+
 	render() {
+		console.log("lat: ", this.state.lat );
+
 		return (
 			<div className="container">
 						
-				<h1>My React App</h1>
-				<MyChild initialName={"Homer"}
-					 parentGreeting={this.parentGreeting} changeName={this.onChangeChildName.bind(this)}/>
-				<br/>
-				<hr/>
-
-				<SecondChild 
-					name={this.state.secondChildName}/>
-
-				<MyListView /> 
-				
+				<h1>Fair Weather Friend</h1>
+				<button onClick={getLocation.bind(this)}>Where you are</button>	
+				<button>Where you wanna be</button>			
 			</div>
 			)
+
+			function getLocation() {
+				console.log("we are at ground zero");
+				navigator.geolocation.getCurrentPosition(
+					function success(position) {
+						var lat, long;
+					  // for when getting location is a success
+					  console.log('latitude', position.coords.latitude, 
+								  'longitude', position.coords.longitude);
+						//call API for goodies
+
+					});
+			}
 	}//end render
 }//end App class
 
