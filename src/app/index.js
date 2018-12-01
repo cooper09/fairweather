@@ -4,12 +4,12 @@ import { render } from "react-dom";
 
 import  axios from "axios";
 
-import { MyChild } from "./components/MyChild";
-import { SecondChild } from "./components/SecondChild";
-import { MyListView } from "./components/MyListView";
-
 import { LocalScrn } from "./components/Local";
 import { AwayScrn } from "./components/Away";
+import { getLocalData } from "./utils/getLocalAPI";
+import { getLondonData } from "./utils/getLondonAPI";
+import { getDubaiData } from "./utils/getDubaiAPI";
+import { getSingaporeData } from "./utils/getSingaporeAPI";
 
 class App extends React.Component {
 
@@ -17,12 +17,53 @@ class App extends React.Component {
 		super();
 		this.state = {
 			local:true,
-			away:false
+			away:false,
+			localData: [],
+			londonData: [],
+			dubaiData: [],
+			singaporeData: []
 		}
 	}//end constructor
 
+	getLocation() {
+		getLocalData().then (
+			(localData) => {
+				console.log("Our Local Data: ", localData );
+				this.setState({localData})
+			});
+
+	}
+	getLondon() {
+		getLondonData().then (
+			(londonData) => {
+				console.log("Our London data: ", londonData );
+				this.setState({londonData})
+			});
+
+	}
+	getDubai() {
+		getDubaiData().then (
+			(dubaiData) => {
+				console.log("Our Dubai Data: ", dubaiData );
+				this.setState({dubaiData})
+			});
+
+	}
+	getSingapore() {
+		getSingaporeData().then (
+			(singaporeData) => {
+				console.log("Our Singapore Data: ", singaporeData );
+				this.setState({singaporeData})
+			});
+
+	}
+
+
 	componentDidMount() {
-        //this.getLocation();
+		this.getLocation();
+		this.getLondon();
+		this.getDubai();
+		this.getSingapore();
       }
 
 	render() {
@@ -36,8 +77,8 @@ class App extends React.Component {
 				<button onClick={getLocation.bind(this)}>Where you are</button>	
 				<button onClick={getAway.bind(this)}>Where you wanna be</button>	
 
-				<LocalScrn visible={this.state.local} />
-				<AwayScrn visible={this.state.away}/>		
+				<LocalScrn visible={this.state.local}  localData={this.state.localData }/>
+				<AwayScrn visible={this.state.away} londonData={this.state.londonData} dubaiData={this.state.dubaiData} singaporeData={this.state.singaporeData }/>		
 			</div>
 			)
 
@@ -64,7 +105,7 @@ class App extends React.Component {
 					getLocalData(coordObj).then (
 						(data) => {
 							console.log("Heres our data: ", data );
-						
+
 						}
 					  )
 					});//end geolocation
@@ -73,7 +114,7 @@ class App extends React.Component {
 					
 			}//end getLocation
 
-
+/*
 function getLocalData(coords) {
   console.log('getLocalData: ', coords );
   const lat = coords.latitude;
@@ -83,7 +124,7 @@ function getLocalData(coords) {
   const url = `${BASE_URL}` ;
   //console.log('Dirt Cheap: ', axios.get(url).then(response => response.data) )
   return axios.get(url).then(response => response.data);
-}
+}  */
 			
 	}//end render
 }//end App class

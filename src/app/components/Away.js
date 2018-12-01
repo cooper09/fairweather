@@ -15,18 +15,26 @@ export class AwayScrn extends React.Component {
       
           render() {
 
-            console.log("Away Screen visible: ", this.props.visible );
-
               if ( this.props.visible != true ) {
                   console.log("Away Screen is off");
                return false;
              }
+
+              displayObj = {
+                  london: this.props.londonData,
+                  dubai: this.props.dubaiData,
+                  singapore: this.props.singapore
+              }
        
+              console.log("Our Away Data: ", displayObj );
+
               return (
                   <div className="center option animated fadeIn mainScrn">
                       <h3 className="fontStyle"> Second Banana</h3><button className="homeBtn"  onClick={()=> console.log("Batter up!")}>Home</button>
                       Lands Far Far Away!
-                      
+                      <button  onClick={()=> console.log("London up!")}>London</button>
+                      <button  onClick={()=> console.log("Dubai up!")}>Dubai</button>
+                      <button  onClick={()=> console.log("Singaproe up!")}>Singapore</button>
                   </div>
               )//end return
       

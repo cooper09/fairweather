@@ -9,21 +9,16 @@ export class LocalScrn extends React.Component {
           }
         
           componentDidMount() {
-              console.log("ScreenOne - Compoonent mounted - do we have a userid: ", this.props.userId );
+              console.log("LocalScrn - Component mounted - do we have data: ", this.props.localData );
                // this.getArticleData(this.props.userId);
               }
       
           render() {
-
+            console.log("How about now: ", this.props.localData );
               if ( this.props.visible != true ) {
                   console.log("LocalScreen is off");
                return false;
              }
-    /*         
-             if (this.props.screen === "Close Screen" ) {
-                 return false;
-             }
-    */
                 
               return (
                   <div className="center option animated fadeIn mainScrn">
