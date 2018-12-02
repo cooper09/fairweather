@@ -12,24 +12,25 @@ html {
 
 /* line 9, ../sass/partials/_main.sass */
 body {
-  background: #ccc;
+  background: url("https://media.giphy.com/media/26u6dryuZH98z5KuY/giphy.gif") no-repeat;
+  background-size: 100% 100%;
   padding: 1em;
   font-family: arial, sans-serif;
 }
 
-/* line 15, ../sass/partials/_main.sass */
+/* line 17, ../sass/partials/_main.sass */
 h1 {
   color: #333;
   font-family: arial, sans-serif;
 }
 
-/* line 19, ../sass/partials/_main.sass */
+/* line 21, ../sass/partials/_main.sass */
 p {
   color: #ccc;
   font-family: arial, sans-serif;
 }
 
-/* line 23, ../sass/partials/_main.sass */
+/* line 25, ../sass/partials/_main.sass */
 button {
   background: #666;
   color: #ccc;
@@ -38,7 +39,7 @@ button {
   font-size: 1.2em;
 }
 
-/* line 30, ../sass/partials/_main.sass */
+/* line 32, ../sass/partials/_main.sass */
 .mainScrn {
   width: 100%;
   float: left;
@@ -54,7 +55,7 @@ button {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 651px) {
-  /* line 30, ../sass/partials/_main.sass */
+  /* line 32, ../sass/partials/_main.sass */
   .mainScrn {
     width: 100%;
     float: left;
@@ -62,7 +63,7 @@ button {
   }
 }
 
-/* line 43, ../sass/partials/_main.sass */
+/* line 45, ../sass/partials/_main.sass */
 .subScrn {
   width: 100%;
   float: left;
@@ -78,7 +79,7 @@ button {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 651px) {
-  /* line 43, ../sass/partials/_main.sass */
+  /* line 45, ../sass/partials/_main.sass */
   .subScrn {
     width: 100%;
     float: left;
@@ -86,7 +87,7 @@ button {
   }
 }
 
-/* line 56, ../sass/partials/_main.sass */
+/* line 58, ../sass/partials/_main.sass */
 .infoBox {
   padding: 1em;
   float: left;
@@ -96,7 +97,7 @@ button {
   border: solid 1px #333;
 }
 @media (max-width: 651px) {
-  /* line 56, ../sass/partials/_main.sass */
+  /* line 58, ../sass/partials/_main.sass */
   .infoBox {
     width: 83.05085%;
     float: left;
@@ -104,12 +105,12 @@ button {
   }
 }
 
-/* line 66, ../sass/partials/_main.sass */
+/* line 68, ../sass/partials/_main.sass */
 .right {
   float: right;
 }
 
-/* line 69, ../sass/partials/_main.sass */
+/* line 71, ../sass/partials/_main.sass */
 .stinky {
   font-size: 0.6em;
   position: fixed;
