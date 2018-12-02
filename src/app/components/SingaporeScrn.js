@@ -48,6 +48,7 @@ export class SingaporeScrn extends React.Component {
                                     ++num;
                                     return  <div key={num} >
                                                 <span className= "infoBox">
+                                                Day {num}<br/>
                                                 Current Temp: {resultArr.temp}<br/>
                                                 High Temp: {resultArr.high}<br/>
                                                 Low Temp: {resultArr.low}<br/>

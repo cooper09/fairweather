@@ -35,16 +35,15 @@ button {
   color: #ccc;
   cursor: pointer;
   padding: 0.5em;
-  font-size: 1.2em;
 }
 
-/* line 30, ../sass/partials/_main.sass */
+/* line 29, ../sass/partials/_main.sass */
 .mainScrn {
   width: 100%;
   float: left;
   margin-right: 1.69492%;
   display: inline;
-  background: #333;
+  background: #111;
   color: #ccc;
   padding: 1em;
   cursor: pointer;
@@ -54,7 +53,7 @@ button {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 651px) {
-  /* line 30, ../sass/partials/_main.sass */
+  /* line 29, ../sass/partials/_main.sass */
   .mainScrn {
     width: 100%;
     float: left;
@@ -62,23 +61,22 @@ button {
   }
 }
 
-/* line 43, ../sass/partials/_main.sass */
+/* line 42, ../sass/partials/_main.sass */
 .subScrn {
   width: 100%;
   float: left;
   margin-right: 1.69492%;
   display: inline;
-  background: #ccc;
+  background: #ddd;
   color: #333;
   padding: 1em;
   cursor: pointer;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1em;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 651px) {
-  /* line 43, ../sass/partials/_main.sass */
+  /* line 42, ../sass/partials/_main.sass */
   .subScrn {
     width: 100%;
     float: left;
@@ -86,37 +84,16 @@ button {
   }
 }
 
-/* line 56, ../sass/partials/_main.sass */
+/* line 54, ../sass/partials/_main.sass */
 .infoBox {
   padding: 1em;
   float: left;
-  background: #ccc;
+  background: aqua;
   margin: 1em;
   color: #333;
-  border: solid 1px #333;
-}
-@media (max-width: 651px) {
-  /* line 56, ../sass/partials/_main.sass */
-  .infoBox {
-    width: 83.05085%;
-    float: left;
-    margin-right: 1.69492%;
-  }
 }
 
-/* line 66, ../sass/partials/_main.sass */
+/* line 61, ../sass/partials/_main.sass */
 .right {
   float: right;
-}
-
-/* line 69, ../sass/partials/_main.sass */
-.stinky {
-  font-size: 0.6em;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color: red;
-  color: white;
-  text-align: center;
 }

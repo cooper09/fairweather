@@ -4,7 +4,6 @@ import { convertDate } from "../utils/convertDate";
 import { getDataArray } from "../utils/getDataArray";
 
 export class LocalScrn extends React.Component {
-   // class ScreenOne extends Component {
         constructor() {
               super()
               this.state = { 
@@ -35,7 +34,8 @@ export class LocalScrn extends React.Component {
 
               return (
                   <div className="center option animated fadeIn mainScrn">
-                      <h3 className="fontStyle"> Local Juice</h3><button onClick={this.props.close} className="right">Done</button>
+                    <button onClick={this.props.close} className="right">Done</button>
+                      <h3 className="fontStyle"> Local Juice</h3>
 
                       Five Day Forcast for  {location}
                         <p></p>
@@ -47,6 +47,7 @@ export class LocalScrn extends React.Component {
                                     ++num;
                                     return  <div key={num} >
                                                 <span className= "infoBox">
+                                                Day {num}<br/>
                                                 Current Temp: {resultArr.temp}<br/>
                                                 High Temp: {resultArr.high}<br/>
                                                 Low Temp: {resultArr.low}<br/>

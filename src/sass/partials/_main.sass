@@ -8,11 +8,12 @@ html
 
 body
   //background: url('https://66.media.tumblr.com/d51a2a2502f70238adbb0c242c4e89dd/tumblr_ocqdob8xcZ1s8iqo7o1_1280.gif') no-repeat
-  background: blue
+  background: #ccc
   padding: 1em
+  font-family: arial, sans-serif
 
 h1
-  color: #ccc
+  color: #333
   font-family: arial, sans-serif
 
 p
@@ -23,8 +24,54 @@ button
   background: #666
   color: #ccc
   cursor: pointer
+  padding: 0.5em
+  font-size: 1.2em
 
+.mainScrn
+  +span-columns(12)
+  background: #333
+  color: #ccc
+  padding: 1em
+  cursor: pointer
+  margin-left: auto
+  margin-right: auto
+  margin-top: 1em
+  box-shadow: 0 0 5px rgba(0, 0, 0, .5)
+  +at-breakpoint($phone)
+    +span-columns(12)
 
-.special
-  color: yellow
-  font-family: arial, sans-serif
+.subScrn
+  +span-columns(12)
+  background: #ccc
+  color: #333
+  padding: 1em
+  cursor: pointer
+  margin-left: auto
+  margin-right: auto
+  margin-top: 1em
+  box-shadow: 0 0 5px rgba(0, 0, 0, .5)
+  +at-breakpoint($phone)
+    +span-columns(12)
+
+.infoBox
+  padding: 1em
+  float: left
+  background: #ccc
+  margin: 1em
+  color: #333
+  border: solid 1px #333
+  +at-breakpoint($phone)
+    +span-columns(10)
+
+.right
+  float: right
+
+.stinky
+  font-size: 0.6em
+  position: fixed
+  left: 0
+  bottom: 0
+  width: 100%
+  background-color: red
+  color: white
+  text-align: center
