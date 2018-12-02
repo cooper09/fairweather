@@ -49,6 +49,7 @@ export class SingaporeScrn extends React.Component {
                                     return  <div key={num} >
                                                 <span className= "infoBox">
                                                 Day {num}<br/>
+                                                <img src={resultArr.icon} /> <br/>
                                                 Current Temp: {resultArr.temp}<br/>
                                                 High Temp: {resultArr.high}<br/>
                                                 Low Temp: {resultArr.low}<br/>

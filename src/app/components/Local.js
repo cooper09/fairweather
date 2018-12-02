@@ -32,6 +32,8 @@ export class LocalScrn extends React.Component {
              
             const time = convertDate(weather[0].dt_txt);
 
+            console.log("Local - little pod thingy: ", weather[0].weather[0].icon );
+
               return (
                   <div className="center option animated fadeIn mainScrn">
                     <button onClick={this.props.close} className="right">Done</button>
@@ -48,10 +50,12 @@ export class LocalScrn extends React.Component {
                                     return  <div key={num} >
                                                 <span className= "infoBox">
                                                 Day {num}<br/>
-                                                Current Temp: {resultArr.temp}<br/>
+                                                <img src={resultArr.icon} /> <br/>
+                                                Temp: {resultArr.temp}<br/>
                                                 High Temp: {resultArr.high}<br/>
                                                 Low Temp: {resultArr.low}<br/>
                                                 Forecast: {resultArr.forecast}<br/>
+                                                
                                                 </span>
                                             </div>
                                 }) 

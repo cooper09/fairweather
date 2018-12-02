@@ -7,6 +7,7 @@ function getDataArray (arr) {
     var infoArr = [];
     for (var i = 0 ; i < 5 ;++i ) {
       var infoObj = {};
+      infoObj.icon = "https://openweathermap.org/img/w/"+arr[i].weather[0].icon+".png";
       infoObj.time = convertDate(arr[i].dt_txt);
       infoObj.temp =  convertTemp (arr[i].main.temp);
       infoObj.low =  convertTemp (arr[i].main.temp_min);
