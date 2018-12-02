@@ -34,7 +34,12 @@ button {
   color: #ccc;
   cursor: pointer;
 }
-
+table {
+  background: pink;
+}
+table td {
+  padding: 0.5em;
+}
 /* line 28, ../sass/partials/_main.sass */
 .special {
   color: yellow;
@@ -42,7 +47,19 @@ button {
 }
 
 .mainScrn {
-  height: 300px; 
+  height: 400px; 
   width: 800px;
   background: #eee;
+  padding: 1em;
+}
+.subScrn {
+  height: 300px;
+  width: 700px;
+  background: #ccc;
+  padding: 1em;
+}
+
+
+.right {
+  float: right;
 }

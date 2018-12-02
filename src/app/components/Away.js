@@ -1,16 +1,21 @@
 import React from "react";
+import {LondonScrn} from "./LondonScrn";
+import {DubaiScrn} from "./DubaiScrn";
+import {SingaporeScrn} from "./SingaporeScrn";
 
 export class AwayScrn extends React.Component {
 
         constructor() {
               super()
-              this.state = { articles: []
+              this.state = { 
+                  singapore: true,
+                  dubai: false,
+                  singapore: false,
+                  data: []
             }
           }
         
           componentDidMount() {
-              //console.log("ScreenOne - Compoonent mounted - do we have a userid: ", this.props.userId );
-               // this.getArticleData(this.props.userId);
               }
       
           render() {
@@ -23,18 +28,22 @@ export class AwayScrn extends React.Component {
             var displayObj = {
                   london: this.props.londonData,
                   dubai: this.props.dubaiData,
-                  singapore: this.props.singapore
+                  singapore: this.props.singaporeData
               }
        
               console.log("Our Away Data: ", displayObj );
 
               return (
                   <div className="center option animated fadeIn mainScrn">
-                      <h3 className="fontStyle"> Second Banana</h3><button className="homeBtn"  onClick={()=> console.log("Batter up!")}>Home</button>
+                      <h3 className="fontStyle"> Second Banana</h3>
                       Lands Far Far Away!
-                      <button  onClick={()=> console.log("London up!")}>London</button>
-                      <button  onClick={()=> console.log("Dubai up!")}>Dubai</button>
-                      <button  onClick={()=> console.log("Singaproe up!")}>Singapore</button>
+                      <button  onClick={()=> this.setState({  london: true, dubai: false, singapore: false })}>London</button>
+                      <button  onClick={()=> this.setState({  london: false, dubai: true, singapore: false })}>Dubai</button>
+                      <button  onClick={()=> this.setState({  london: false, dubai: false, singapore: true })}>Singapore</button>
+
+                      <LondonScrn visible={this.state.london} data={displayObj.london}/>
+                      <DubaiScrn visible={this.state.dubai} data={displayObj.dubai}/>
+                      <SingaporeScrn visible={this.state.singapore} data={displayObj.singapore}/>
                   </div>
               )//end return
       
