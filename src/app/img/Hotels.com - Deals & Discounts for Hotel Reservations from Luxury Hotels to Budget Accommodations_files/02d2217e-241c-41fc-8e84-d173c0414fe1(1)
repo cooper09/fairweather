@@ -1,0 +1,1 @@
+Krux.ns.hotelscom.kxjsonp_consent_set_1({"status":400,"body":{"code":"bad_request","request_id":"1kulHl3GTvewgANkeuDHuq","timestamp":1543792080,"pr":"global","settings":{"dc":1,"al":1,"tg":1,"cd":1,"sh":0,"re":1},"idt":"device","idv":"DNT","errors":{"idv":"user opted out via (optout or dnt)"},"dt":"kxcookie"}});

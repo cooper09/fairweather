@@ -1,0 +1,2 @@
+Bootstrapper.bindDependencyImmediate(function(){var Bootstrapper=window["Bootstrapper"];var ensightenOptions=Bootstrapper.ensightenOptions;var dl_obj=Bootstrapper.dataManager?Bootstrapper.dataManager.getData():{};var dl="dataLayer";window[dl]=window[dl]||[];window.gtag=window.gtag||function gtag(){window[dl].push(arguments)};(function(){gtag("event","purchase",{"allow_custom_scripts":true,"u1":dl_obj.Userpos,"send_to":"DC-8966610/homepglo/homep0+standard"})}).call(window)},2709564,[2683882,2709604],
+575687,[270434,559950]);

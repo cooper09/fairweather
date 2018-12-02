@@ -35,7 +35,7 @@ export class SingaporeScrn extends React.Component {
               return (
                   <div className="center option animated fadeIn subScrn">
                       <h3 className="fontStyle"> Singing Singapore</h3>
-
+                      <button onClick={()=>window.open("https://www.singaporeair.com/")} className="right">Let's Go!</button>
 
                       Five Day Forcast for  {location}
                         <p></p>
@@ -50,7 +50,7 @@ export class SingaporeScrn extends React.Component {
                                                 <span className= "infoBox">
                                                 Day {num}<br/>
                                                 <img src={resultArr.icon} /> <br/>
-                                                Current Temp: {resultArr.temp}<br/>
+                                                Temp: {resultArr.temp}<br/>
                                                 High Temp: {resultArr.high}<br/>
                                                 Low Temp: {resultArr.low}<br/>
                                                 Forecast: {resultArr.forecast}<br/>

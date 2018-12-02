@@ -34,7 +34,7 @@ export class DubaiScrn extends React.Component {
               return (
                   <div className="center option animated fadeIn subScrn">
                       <h3 className="fontStyle"> Desert Dubai</h3>
-
+                      <button onClick={()=>window.open("https://www.google.com/flights?lite=0#flt=/m/02_286./m/01f08r.2019-01-07*/m/01f08r./m/02_286.2019-01-23;c:USD;e:1;sd:1;t:f")} className="right">Let's Go!</button>
 
                       Five Day Forcast for  {location}
                         <p></p>
@@ -48,7 +48,7 @@ export class DubaiScrn extends React.Component {
                                                 <span className= "infoBox">
                                                 Day {num}<br/>
                                                 <img src={resultArr.icon} /> <br/>
-                                                Current Temp: {resultArr.temp}<br/>
+                                                Temp: {resultArr.temp}<br/>
                                                 High Temp: {resultArr.high}<br/>
                                                 Low Temp: {resultArr.low}<br/>
                                                 Forecast: {resultArr.forecast}<br/>
