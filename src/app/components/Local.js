@@ -1,4 +1,7 @@
 import React from "react";
+import { convertTemp } from "../utils/convertTemp";
+import { convertDate } from "../utils/convertDate";
+import { getDataArray } from "../utils/getDataArray";
 
 export class LocalScrn extends React.Component {
    // class ScreenOne extends Component {
@@ -1281,26 +1284,15 @@ export class LocalScrn extends React.Component {
              var location = this.state.localData.city.name;
              var weather = this.state.localData.list;
 
-
-
              console.log("Weather report: ", weather[0] );
+                    
+             let num = 0;
              let dataArr = [];
 
-        /*    for (var i=0 ; i < 5 ; ++i ) {
-                var dataObj = {};
-                dataObj.temp =  convertTemp (weather[i].main.temp);
-                dataObj.low =  convertTemp (weather[i].main.temp_min);
-                dataObj.high =  convertTemp (weather[i].main.temp_max);
-                dataObj.forecast = weather[i].weather[0].description;
-                dataArr.push(dataObj);
-            }    */ 
-
+             dataArr = getDataArray(weather);
+             
             console.log("Final dataArr: ", dataArr );
             var time = convertDate(weather[0].dt_txt);
-            var temp =  convertTemp (weather[0].main.temp);
-            var low =  convertTemp (weather[0].main.temp_min);
-            var high =  convertTemp (weather[0].main.temp_max);
-            var forecast = weather[0].weather[0].description;
 
               return (
                   <div className="center option animated fadeIn mainScrn">
@@ -1311,48 +1303,19 @@ export class LocalScrn extends React.Component {
                         {time}
                         <p></p>
 
-                    <table>
-                        <tbody>
-                        <tr>
-                           
-                        <td>
-                            <th>Day One</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
-                            </td>
-                            <td>
-                            <th>Day Two</th>
-                                current temp: {temp} &#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
-                            </td>
-                            <td>
-                            <th>Day Three</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
-                            </td>
-                            <td>
-                            <th>Day Four</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
-                            </td>
-                            <td>
-                            <th>Day Five</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    {
+                             dataArr.map(function(resultArr, num) {
+                                    ++num;
+                                    return  <div key={num} >
+                                                <span className= "infoBox">
+                                                Current Temp: {resultArr.temp}<br/>
+                                                High Temp: {resultArr.high}<br/>
+                                                Low Temp: {resultArr.low}<br/>
+                                                Forecast: {resultArr.forecast}<br/>
+                                                </span>
+                                            </div>
+                                }) 
+                        }
                                       
                   </div>
               )//end return
@@ -1360,22 +1323,6 @@ export class LocalScrn extends React.Component {
               function handleClick (){
                
               }//end handleItemClick
-    
-              function convertTemp(ktemp) {
-                  console.log("convertTemp: ", ktemp );
-                  ktemp = parseFloat(ktemp);
-                  let val =  ((ktemp - 273.15) * 1.8) + 32 
-                  val = Math.round(val );
-                  return val;
-              }//end convertTemp
-
-              function convertDate(date) {
-                  console.log("convertDate: ", date );
-                  //date = date.split("");
-                  console.log("date: ", date )
-                  var d = new Date(date);
-                  return date;
-              }
 
           }//end render
       

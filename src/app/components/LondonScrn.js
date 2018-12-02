@@ -51,49 +51,6 @@ export class LondonScrn extends React.Component {
                         <p></p>
                         {time}
                         <p></p>
-
-                    <table>
-                      <tbody>
-                        <tr>                
-                        <td>
-                        <th>Day One</th>   
-                                current temp: {dataArr[0].temp}&#8457;<br/>
-                                high temp: {dataArr[0].high} &#8457;<br/>
-                                low temp: {dataArr[0].low} &#8457;<br/>
-                                forecast: {dataArr[0].forecast}
-                            </td>
-                            <td>
-                            <th>Day Two</th>
-                                current temp: {dataArr[1].temp} &#8457;<br/>
-                                high temp: {dataArr[1].high} &#8457;<br/>
-                                low temp: {dataArr[1].low} &#8457;<br/>
-                                forecast: {dataArr[1].forecast}
-                            </td>
-                            <td>
-                            <th>Day Three</th>
-                                current temp: {dataArr[2].temp}&#8457;<br/>
-                                high temp: {dataArr[2].high} &#8457;<br/>
-                                low temp: {dataArr[2].low} &#8457;<br/>
-                                forecast: {dataArr[2].forecast}
-                            </td>
-                            <td>
-                            <th>Day Four</th>
-                                current temp: {dataArr[3].temp}&#8457;<br/>
-                                high temp: {dataArr[3].high} &#8457;<br/>
-                                low temp: {dataArr[3].low} &#8457;<br/>
-                                forecast: {dataArr[3].forecast}
-                            </td>
-                            <td>
-                            <th>Day Five</th>
-                                current temp: {dataArr[4].temp}&#8457;<br/>
-                                high temp: {dataArr[4].high} &#8457;<br/>
-                                low temp: {dataArr[4].low} &#8457;<br/>
-                                forecast: {dataArr[4].forecast}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                        
                         {
                              dataArr.map(function(resultArr, num) {
                                     ++num;
@@ -105,8 +62,9 @@ export class LondonScrn extends React.Component {
                                                 Forecast: {resultArr.forecast}<br/>
                                                 </span>
                                             </div>
-                                }) }
+                                }) 
                         }
+                        
 
                   </div>
               )//end return
