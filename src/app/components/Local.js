@@ -1312,6 +1312,7 @@ export class LocalScrn extends React.Component {
                         <p></p>
 
                     <table>
+                        <tbody>
                         <tr>
                            
                         <td>
@@ -1350,6 +1351,7 @@ export class LocalScrn extends React.Component {
                                 forecast: {forecast}
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                                       
                   </div>
@@ -1369,7 +1371,7 @@ export class LocalScrn extends React.Component {
 
               function convertDate(date) {
                   console.log("convertDate: ", date );
-                  date = date.split("");
+                  //date = date.split("");
                   console.log("date: ", date )
                   var d = new Date(date);
                   return date;

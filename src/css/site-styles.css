@@ -36,6 +36,7 @@ button {
 }
 table {
   background: pink;
+  width: 100%;
 }
 table td {
   padding: 0.5em;
@@ -48,13 +49,13 @@ table td {
 
 .mainScrn {
   height: 400px; 
-  width: 800px;
+  width: 100%;
   background: #eee;
   padding: 1em;
 }
 .subScrn {
   height: 300px;
-  width: 700px;
+  width: 100%;
   background: #ccc;
   padding: 1em;
 }

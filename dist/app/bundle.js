@@ -57,11 +57,25 @@
 	
 	var _reactDom = __webpack_require__(/*! react-dom */ 37);
 	
-	var _MyChild = __webpack_require__(/*! ./components/MyChild */ 184);
+	var _axios = __webpack_require__(/*! axios */ 184);
 	
-	var _SecondChild = __webpack_require__(/*! ./components/SecondChild */ 185);
+	var _axios2 = _interopRequireDefault(_axios);
 	
-	var _MyListView = __webpack_require__(/*! ./components/MyListView */ 186);
+	var _Local = __webpack_require__(/*! ./components/Local */ 210);
+	
+	var _Away = __webpack_require__(/*! ./components/Away */ 211);
+	
+	var _getLocalAPI = __webpack_require__(/*! ./utils/getLocalAPI */ 217);
+	
+	var _getLondonAPI = __webpack_require__(/*! ./utils/getLondonAPI */ 218);
+	
+	var _getDubaiAPI = __webpack_require__(/*! ./utils/getDubaiAPI */ 219);
+	
+	var _getSingaporeAPI = __webpack_require__(/*! ./utils/getSingaporeAPI */ 220);
+	
+	var _testdata = __webpack_require__(/*! ./data/testdata.json */ 221);
+	
+	var _testdata2 = _interopRequireDefault(_testdata);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -80,26 +94,70 @@
 			var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 	
 			_this.state = {
-				secondChildName: "Gertrude"
+				local: true,
+				away: false,
+				localData: [],
+				londonData: [],
+				dubaiData: [],
+				singaporeData: []
 			};
 			return _this;
 		} //end constructor
 	
 		_createClass(App, [{
-			key: "parentGreeting",
-			value: function parentGreeting() {
-				alert("From the Parent");
+			key: "getLocation",
+			value: function getLocation() {
+				var _this2 = this;
+	
+				(0, _getLocalAPI.getLocalData)().then(function (localData) {
+					console.log("Our Local Data: ", localData);
+					_this2.setState({ localData: localData });
+				});
 			}
 		}, {
-			key: "onChangeChildName",
-			value: function onChangeChildName(newName) {
-				this.setState({
-					secondChildName: newName
+			key: "getLondon",
+			value: function getLondon() {
+				var _this3 = this;
+	
+				(0, _getLondonAPI.getLondonData)().then(function (londonData) {
+					console.log("Our London data: ", londonData);
+					_this3.setState({ londonData: londonData });
 				});
+			}
+		}, {
+			key: "getDubai",
+			value: function getDubai() {
+				var _this4 = this;
+	
+				(0, _getDubaiAPI.getDubaiData)().then(function (dubaiData) {
+					console.log("Our Dubai Data: ", dubaiData);
+					_this4.setState({ dubaiData: dubaiData });
+				});
+			}
+		}, {
+			key: "getSingapore",
+			value: function getSingapore() {
+				var _this5 = this;
+	
+				(0, _getSingaporeAPI.getSingaporeData)().then(function (singaporeData) {
+					console.log("Our Singapore Data: ", singaporeData);
+					_this5.setState({ singaporeData: singaporeData });
+				});
+			}
+		}, {
+			key: "componentDidMount",
+			value: function componentDidMount() {
+				this.getLocation();
+				this.getLondon();
+				this.getDubai();
+				this.getSingapore();
 			}
 		}, {
 			key: "render",
 			value: function render() {
+	
+				console.log("local data: ", _testdata2.default);
+	
 				return _react2.default.createElement(
 					"div",
 					{ className: "container" },
@@ -107,8 +165,58 @@
 						"h1",
 						null,
 						"Fair Weather Friend"
-					)
+					),
+					_react2.default.createElement(
+						"button",
+						{ onClick: getLocation.bind(this) },
+						"Where you are"
+					),
+					_react2.default.createElement(
+						"button",
+						{ onClick: getAway.bind(this) },
+						"Where you wanna be"
+					),
+					_react2.default.createElement(_Local.LocalScrn, { visible: this.state.local, localData: this.state.localData }),
+					_react2.default.createElement(_Away.AwayScrn, { visible: this.state.away, londonData: this.state.londonData, dubaiData: this.state.dubaiData, singaporeData: this.state.singaporeData })
 				);
+	
+				function getAway() {
+					console.log("And the boyz from Brazil??");
+					this.setState({ local: false, away: true });
+				} //end getAway
+	
+				function getLocation() {
+					console.log("we are at ground zero");
+	
+					navigator.geolocation.getCurrentPosition(function success(position) {
+						var lat, long;
+						// for when getting location is a success
+						console.log('latitude', position.coords.latitude, 'longitude', position.coords.longitude);
+						//call API for goodies
+						var coordObj = {
+							"latitude": position.coords.latitude,
+							"longitude": position.coords.longitude
+						};
+	
+						(0, _getLocalAPI.getLocalData)(coordObj).then(function (data) {
+							console.log("Heres our data: ", data);
+						});
+					}); //end geolocation
+	
+					this.setState({ local: true, away: false });
+				} //end getLocation
+	
+				/*
+	   function getLocalData(coords) {
+	     console.log('getLocalData: ', coords );
+	     const lat = coords.latitude;
+	     const long = coords.longitude;
+	   
+	     const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+long+'&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+	     const url = `${BASE_URL}` ;
+	     //console.log('Dirt Cheap: ', axios.get(url).then(response => response.data) )
+	     return axios.get(url).then(response => response.data);
+	   }  */
 			} //end render
 	
 		}]);
@@ -22581,123 +22689,1642 @@
 
 /***/ }),
 /* 184 */
-/*!***************************************!*\
-  !*** ./src/app/components/MyChild.js ***!
-  \***************************************/
+/*!**************************!*\
+  !*** ./~/axios/index.js ***!
+  \**************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.MyChild = undefined;
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var MyChild = exports.MyChild = function (_React$Component) {
-		_inherits(MyChild, _React$Component);
-	
-		//manage external props
-		function MyChild(props) {
-			_classCallCheck(this, MyChild);
-	
-			var _this = _possibleConstructorReturn(this, (MyChild.__proto__ || Object.getPrototypeOf(MyChild)).call(this));
-	
-			_this.state = {
-				name: props.initialName,
-				newName: "Big Bertha"
-			};
-			return _this;
-		} //end constructor
-	
-		_createClass(MyChild, [{
-			key: "clickMe",
-			value: function clickMe() {
-				this.setState({
-					name: "Roberto"
-				});
-				console.log("I have been clicked, baby: ", this.state);
-			}
-		}, {
-			key: "onChangeName",
-			value: function onChangeName() {
-				this.props.changeName(this.state.newName);
-			}
-		}, {
-			key: "render",
-			value: function render() {
-				var hello = "hello there!";
-	
-				return _react2.default.createElement(
-					"div",
-					null,
-					_react2.default.createElement(
-						"h3",
-						{ className: "special" },
-						"My First Component"
-					),
-					_react2.default.createElement(
-						"p",
-						null,
-						this.state.name
-					),
-					_react2.default.createElement(
-						"button",
-						{ onClick: this.clickMe.bind(this) },
-						"Click Me!"
-					),
-					_react2.default.createElement("br", null),
-					_react2.default.createElement("br", null),
-					_react2.default.createElement(
-						"button",
-						{ onClick: this.props.parentGreeting },
-						"Greetings from Parent"
-					),
-					_react2.default.createElement("br", null),
-					_react2.default.createElement("br", null),
-					_react2.default.createElement(
-						"button",
-						{ onClick: this.onChangeName.bind(this) },
-						"Change Second Child Name"
-					)
-				);
-			}
-		}]);
-	
-		return MyChild;
-	}(_react2.default.Component);
-	
-	MyChild.propTypes = {
-		name: _react2.default.PropTypes.string,
-		parentGreeting: _react2.default.PropTypes.func
-	};
+	module.exports = __webpack_require__(/*! ./lib/axios */ 185);
 
 /***/ }),
 /* 185 */
+/*!******************************!*\
+  !*** ./~/axios/lib/axios.js ***!
+  \******************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./utils */ 186);
+	var bind = __webpack_require__(/*! ./helpers/bind */ 187);
+	var Axios = __webpack_require__(/*! ./core/Axios */ 189);
+	var defaults = __webpack_require__(/*! ./defaults */ 190);
+	
+	/**
+	 * Create an instance of Axios
+	 *
+	 * @param {Object} defaultConfig The default config for the instance
+	 * @return {Axios} A new instance of Axios
+	 */
+	function createInstance(defaultConfig) {
+	  var context = new Axios(defaultConfig);
+	  var instance = bind(Axios.prototype.request, context);
+	
+	  // Copy axios.prototype to instance
+	  utils.extend(instance, Axios.prototype, context);
+	
+	  // Copy context to instance
+	  utils.extend(instance, context);
+	
+	  return instance;
+	}
+	
+	// Create the default instance to be exported
+	var axios = createInstance(defaults);
+	
+	// Expose Axios class to allow class inheritance
+	axios.Axios = Axios;
+	
+	// Factory for creating new instances
+	axios.create = function create(instanceConfig) {
+	  return createInstance(utils.merge(defaults, instanceConfig));
+	};
+	
+	// Expose Cancel & CancelToken
+	axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ 207);
+	axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ 208);
+	axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ 204);
+	
+	// Expose all/spread
+	axios.all = function all(promises) {
+	  return Promise.all(promises);
+	};
+	axios.spread = __webpack_require__(/*! ./helpers/spread */ 209);
+	
+	module.exports = axios;
+	
+	// Allow use of default import syntax in TypeScript
+	module.exports.default = axios;
+
+
+/***/ }),
+/* 186 */
+/*!******************************!*\
+  !*** ./~/axios/lib/utils.js ***!
+  \******************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var bind = __webpack_require__(/*! ./helpers/bind */ 187);
+	var isBuffer = __webpack_require__(/*! is-buffer */ 188);
+	
+	/*global toString:true*/
+	
+	// utils is a library of generic helper functions non-specific to axios
+	
+	var toString = Object.prototype.toString;
+	
+	/**
+	 * Determine if a value is an Array
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an Array, otherwise false
+	 */
+	function isArray(val) {
+	  return toString.call(val) === '[object Array]';
+	}
+	
+	/**
+	 * Determine if a value is an ArrayBuffer
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+	 */
+	function isArrayBuffer(val) {
+	  return toString.call(val) === '[object ArrayBuffer]';
+	}
+	
+	/**
+	 * Determine if a value is a FormData
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an FormData, otherwise false
+	 */
+	function isFormData(val) {
+	  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+	}
+	
+	/**
+	 * Determine if a value is a view on an ArrayBuffer
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+	 */
+	function isArrayBufferView(val) {
+	  var result;
+	  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+	    result = ArrayBuffer.isView(val);
+	  } else {
+	    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Determine if a value is a String
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a String, otherwise false
+	 */
+	function isString(val) {
+	  return typeof val === 'string';
+	}
+	
+	/**
+	 * Determine if a value is a Number
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Number, otherwise false
+	 */
+	function isNumber(val) {
+	  return typeof val === 'number';
+	}
+	
+	/**
+	 * Determine if a value is undefined
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if the value is undefined, otherwise false
+	 */
+	function isUndefined(val) {
+	  return typeof val === 'undefined';
+	}
+	
+	/**
+	 * Determine if a value is an Object
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is an Object, otherwise false
+	 */
+	function isObject(val) {
+	  return val !== null && typeof val === 'object';
+	}
+	
+	/**
+	 * Determine if a value is a Date
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Date, otherwise false
+	 */
+	function isDate(val) {
+	  return toString.call(val) === '[object Date]';
+	}
+	
+	/**
+	 * Determine if a value is a File
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a File, otherwise false
+	 */
+	function isFile(val) {
+	  return toString.call(val) === '[object File]';
+	}
+	
+	/**
+	 * Determine if a value is a Blob
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Blob, otherwise false
+	 */
+	function isBlob(val) {
+	  return toString.call(val) === '[object Blob]';
+	}
+	
+	/**
+	 * Determine if a value is a Function
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Function, otherwise false
+	 */
+	function isFunction(val) {
+	  return toString.call(val) === '[object Function]';
+	}
+	
+	/**
+	 * Determine if a value is a Stream
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a Stream, otherwise false
+	 */
+	function isStream(val) {
+	  return isObject(val) && isFunction(val.pipe);
+	}
+	
+	/**
+	 * Determine if a value is a URLSearchParams object
+	 *
+	 * @param {Object} val The value to test
+	 * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+	 */
+	function isURLSearchParams(val) {
+	  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+	}
+	
+	/**
+	 * Trim excess whitespace off the beginning and end of a string
+	 *
+	 * @param {String} str The String to trim
+	 * @returns {String} The String freed of excess whitespace
+	 */
+	function trim(str) {
+	  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+	}
+	
+	/**
+	 * Determine if we're running in a standard browser environment
+	 *
+	 * This allows axios to run in a web worker, and react-native.
+	 * Both environments support XMLHttpRequest, but not fully standard globals.
+	 *
+	 * web workers:
+	 *  typeof window -> undefined
+	 *  typeof document -> undefined
+	 *
+	 * react-native:
+	 *  navigator.product -> 'ReactNative'
+	 */
+	function isStandardBrowserEnv() {
+	  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+	    return false;
+	  }
+	  return (
+	    typeof window !== 'undefined' &&
+	    typeof document !== 'undefined'
+	  );
+	}
+	
+	/**
+	 * Iterate over an Array or an Object invoking a function for each item.
+	 *
+	 * If `obj` is an Array callback will be called passing
+	 * the value, index, and complete array for each item.
+	 *
+	 * If 'obj' is an Object callback will be called passing
+	 * the value, key, and complete object for each property.
+	 *
+	 * @param {Object|Array} obj The object to iterate
+	 * @param {Function} fn The callback to invoke for each item
+	 */
+	function forEach(obj, fn) {
+	  // Don't bother if no value provided
+	  if (obj === null || typeof obj === 'undefined') {
+	    return;
+	  }
+	
+	  // Force an array if not already something iterable
+	  if (typeof obj !== 'object') {
+	    /*eslint no-param-reassign:0*/
+	    obj = [obj];
+	  }
+	
+	  if (isArray(obj)) {
+	    // Iterate over array values
+	    for (var i = 0, l = obj.length; i < l; i++) {
+	      fn.call(null, obj[i], i, obj);
+	    }
+	  } else {
+	    // Iterate over object keys
+	    for (var key in obj) {
+	      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+	        fn.call(null, obj[key], key, obj);
+	      }
+	    }
+	  }
+	}
+	
+	/**
+	 * Accepts varargs expecting each argument to be an object, then
+	 * immutably merges the properties of each object and returns result.
+	 *
+	 * When multiple objects contain the same key the later object in
+	 * the arguments list will take precedence.
+	 *
+	 * Example:
+	 *
+	 * ```js
+	 * var result = merge({foo: 123}, {foo: 456});
+	 * console.log(result.foo); // outputs 456
+	 * ```
+	 *
+	 * @param {Object} obj1 Object to merge
+	 * @returns {Object} Result of all merge properties
+	 */
+	function merge(/* obj1, obj2, obj3, ... */) {
+	  var result = {};
+	  function assignValue(val, key) {
+	    if (typeof result[key] === 'object' && typeof val === 'object') {
+	      result[key] = merge(result[key], val);
+	    } else {
+	      result[key] = val;
+	    }
+	  }
+	
+	  for (var i = 0, l = arguments.length; i < l; i++) {
+	    forEach(arguments[i], assignValue);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Extends object a by mutably adding to it the properties of object b.
+	 *
+	 * @param {Object} a The object to be extended
+	 * @param {Object} b The object to copy properties from
+	 * @param {Object} thisArg The object to bind function to
+	 * @return {Object} The resulting value of object a
+	 */
+	function extend(a, b, thisArg) {
+	  forEach(b, function assignValue(val, key) {
+	    if (thisArg && typeof val === 'function') {
+	      a[key] = bind(val, thisArg);
+	    } else {
+	      a[key] = val;
+	    }
+	  });
+	  return a;
+	}
+	
+	module.exports = {
+	  isArray: isArray,
+	  isArrayBuffer: isArrayBuffer,
+	  isBuffer: isBuffer,
+	  isFormData: isFormData,
+	  isArrayBufferView: isArrayBufferView,
+	  isString: isString,
+	  isNumber: isNumber,
+	  isObject: isObject,
+	  isUndefined: isUndefined,
+	  isDate: isDate,
+	  isFile: isFile,
+	  isBlob: isBlob,
+	  isFunction: isFunction,
+	  isStream: isStream,
+	  isURLSearchParams: isURLSearchParams,
+	  isStandardBrowserEnv: isStandardBrowserEnv,
+	  forEach: forEach,
+	  merge: merge,
+	  extend: extend,
+	  trim: trim
+	};
+
+
+/***/ }),
+/* 187 */
+/*!*************************************!*\
+  !*** ./~/axios/lib/helpers/bind.js ***!
+  \*************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function bind(fn, thisArg) {
+	  return function wrap() {
+	    var args = new Array(arguments.length);
+	    for (var i = 0; i < args.length; i++) {
+	      args[i] = arguments[i];
+	    }
+	    return fn.apply(thisArg, args);
+	  };
+	};
+
+
+/***/ }),
+/* 188 */
+/*!******************************!*\
+  !*** ./~/is-buffer/index.js ***!
+  \******************************/
+/***/ (function(module, exports) {
+
+	/*!
+	 * Determine if an object is a Buffer
+	 *
+	 * @author   Feross Aboukhadijeh <https://feross.org>
+	 * @license  MIT
+	 */
+	
+	// The _isBuffer check is for Safari 5-7 support, because it's missing
+	// Object.prototype.constructor. Remove this eventually
+	module.exports = function (obj) {
+	  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+	}
+	
+	function isBuffer (obj) {
+	  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+	}
+	
+	// For Node v0.10 support. Remove this eventually.
+	function isSlowBuffer (obj) {
+	  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+	}
+
+
+/***/ }),
+/* 189 */
+/*!***********************************!*\
+  !*** ./~/axios/lib/core/Axios.js ***!
+  \***********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var defaults = __webpack_require__(/*! ./../defaults */ 190);
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ 201);
+	var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ 202);
+	
+	/**
+	 * Create a new instance of Axios
+	 *
+	 * @param {Object} instanceConfig The default config for the instance
+	 */
+	function Axios(instanceConfig) {
+	  this.defaults = instanceConfig;
+	  this.interceptors = {
+	    request: new InterceptorManager(),
+	    response: new InterceptorManager()
+	  };
+	}
+	
+	/**
+	 * Dispatch a request
+	 *
+	 * @param {Object} config The config specific for this request (merged with this.defaults)
+	 */
+	Axios.prototype.request = function request(config) {
+	  /*eslint no-param-reassign:0*/
+	  // Allow for axios('example/url'[, config]) a la fetch API
+	  if (typeof config === 'string') {
+	    config = utils.merge({
+	      url: arguments[0]
+	    }, arguments[1]);
+	  }
+	
+	  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
+	  config.method = config.method.toLowerCase();
+	
+	  // Hook up interceptors middleware
+	  var chain = [dispatchRequest, undefined];
+	  var promise = Promise.resolve(config);
+	
+	  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+	    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+	  });
+	
+	  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+	    chain.push(interceptor.fulfilled, interceptor.rejected);
+	  });
+	
+	  while (chain.length) {
+	    promise = promise.then(chain.shift(), chain.shift());
+	  }
+	
+	  return promise;
+	};
+	
+	// Provide aliases for supported request methods
+	utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+	  /*eslint func-names:0*/
+	  Axios.prototype[method] = function(url, config) {
+	    return this.request(utils.merge(config || {}, {
+	      method: method,
+	      url: url
+	    }));
+	  };
+	});
+	
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  /*eslint func-names:0*/
+	  Axios.prototype[method] = function(url, data, config) {
+	    return this.request(utils.merge(config || {}, {
+	      method: method,
+	      url: url,
+	      data: data
+	    }));
+	  };
+	});
+	
+	module.exports = Axios;
+
+
+/***/ }),
+/* 190 */
+/*!*********************************!*\
+  !*** ./~/axios/lib/defaults.js ***!
+  \*********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var utils = __webpack_require__(/*! ./utils */ 186);
+	var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ 191);
+	
+	var DEFAULT_CONTENT_TYPE = {
+	  'Content-Type': 'application/x-www-form-urlencoded'
+	};
+	
+	function setContentTypeIfUnset(headers, value) {
+	  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+	    headers['Content-Type'] = value;
+	  }
+	}
+	
+	function getDefaultAdapter() {
+	  var adapter;
+	  if (typeof XMLHttpRequest !== 'undefined') {
+	    // For browsers use XHR adapter
+	    adapter = __webpack_require__(/*! ./adapters/xhr */ 192);
+	  } else if (typeof process !== 'undefined') {
+	    // For node use HTTP adapter
+	    adapter = __webpack_require__(/*! ./adapters/http */ 192);
+	  }
+	  return adapter;
+	}
+	
+	var defaults = {
+	  adapter: getDefaultAdapter(),
+	
+	  transformRequest: [function transformRequest(data, headers) {
+	    normalizeHeaderName(headers, 'Content-Type');
+	    if (utils.isFormData(data) ||
+	      utils.isArrayBuffer(data) ||
+	      utils.isBuffer(data) ||
+	      utils.isStream(data) ||
+	      utils.isFile(data) ||
+	      utils.isBlob(data)
+	    ) {
+	      return data;
+	    }
+	    if (utils.isArrayBufferView(data)) {
+	      return data.buffer;
+	    }
+	    if (utils.isURLSearchParams(data)) {
+	      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+	      return data.toString();
+	    }
+	    if (utils.isObject(data)) {
+	      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+	      return JSON.stringify(data);
+	    }
+	    return data;
+	  }],
+	
+	  transformResponse: [function transformResponse(data) {
+	    /*eslint no-param-reassign:0*/
+	    if (typeof data === 'string') {
+	      try {
+	        data = JSON.parse(data);
+	      } catch (e) { /* Ignore */ }
+	    }
+	    return data;
+	  }],
+	
+	  /**
+	   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+	   * timeout is not created.
+	   */
+	  timeout: 0,
+	
+	  xsrfCookieName: 'XSRF-TOKEN',
+	  xsrfHeaderName: 'X-XSRF-TOKEN',
+	
+	  maxContentLength: -1,
+	
+	  validateStatus: function validateStatus(status) {
+	    return status >= 200 && status < 300;
+	  }
+	};
+	
+	defaults.headers = {
+	  common: {
+	    'Accept': 'application/json, text/plain, */*'
+	  }
+	};
+	
+	utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+	  defaults.headers[method] = {};
+	});
+	
+	utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+	  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+	});
+	
+	module.exports = defaults;
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
+
+/***/ }),
+/* 191 */
+/*!****************************************************!*\
+  !*** ./~/axios/lib/helpers/normalizeHeaderName.js ***!
+  \****************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ../utils */ 186);
+	
+	module.exports = function normalizeHeaderName(headers, normalizedName) {
+	  utils.forEach(headers, function processHeader(value, name) {
+	    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+	      headers[normalizedName] = value;
+	      delete headers[name];
+	    }
+	  });
+	};
+
+
+/***/ }),
+/* 192 */
+/*!*************************************!*\
+  !*** ./~/axios/lib/adapters/xhr.js ***!
+  \*************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	var settle = __webpack_require__(/*! ./../core/settle */ 193);
+	var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ 196);
+	var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ 197);
+	var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ 198);
+	var createError = __webpack_require__(/*! ../core/createError */ 194);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(/*! ./../helpers/btoa */ 199);
+	
+	module.exports = function xhrAdapter(config) {
+	  return new Promise(function dispatchXhrRequest(resolve, reject) {
+	    var requestData = config.data;
+	    var requestHeaders = config.headers;
+	
+	    if (utils.isFormData(requestData)) {
+	      delete requestHeaders['Content-Type']; // Let the browser set it
+	    }
+	
+	    var request = new XMLHttpRequest();
+	    var loadEvent = 'onreadystatechange';
+	    var xDomain = false;
+	
+	    // For IE 8/9 CORS support
+	    // Only supports POST and GET calls and doesn't returns the response headers.
+	    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+	    if (process.env.NODE_ENV !== 'test' &&
+	        typeof window !== 'undefined' &&
+	        window.XDomainRequest && !('withCredentials' in request) &&
+	        !isURLSameOrigin(config.url)) {
+	      request = new window.XDomainRequest();
+	      loadEvent = 'onload';
+	      xDomain = true;
+	      request.onprogress = function handleProgress() {};
+	      request.ontimeout = function handleTimeout() {};
+	    }
+	
+	    // HTTP basic authentication
+	    if (config.auth) {
+	      var username = config.auth.username || '';
+	      var password = config.auth.password || '';
+	      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+	    }
+	
+	    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+	
+	    // Set the request timeout in MS
+	    request.timeout = config.timeout;
+	
+	    // Listen for ready state
+	    request[loadEvent] = function handleLoad() {
+	      if (!request || (request.readyState !== 4 && !xDomain)) {
+	        return;
+	      }
+	
+	      // The request errored out and we didn't get a response, this will be
+	      // handled by onerror instead
+	      // With one exception: request that using file: protocol, most browsers
+	      // will return status as 0 even though it's a successful request
+	      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+	        return;
+	      }
+	
+	      // Prepare the response
+	      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+	      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+	      var response = {
+	        data: responseData,
+	        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
+	        status: request.status === 1223 ? 204 : request.status,
+	        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+	        headers: responseHeaders,
+	        config: config,
+	        request: request
+	      };
+	
+	      settle(resolve, reject, response);
+	
+	      // Clean up request
+	      request = null;
+	    };
+	
+	    // Handle low level network errors
+	    request.onerror = function handleError() {
+	      // Real errors are hidden from us by the browser
+	      // onerror should only fire if it's a network error
+	      reject(createError('Network Error', config, null, request));
+	
+	      // Clean up request
+	      request = null;
+	    };
+	
+	    // Handle timeout
+	    request.ontimeout = function handleTimeout() {
+	      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED',
+	        request));
+	
+	      // Clean up request
+	      request = null;
+	    };
+	
+	    // Add xsrf header
+	    // This is only done if running in a standard browser environment.
+	    // Specifically not if we're in a web worker, or react-native.
+	    if (utils.isStandardBrowserEnv()) {
+	      var cookies = __webpack_require__(/*! ./../helpers/cookies */ 200);
+	
+	      // Add xsrf header
+	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+	          cookies.read(config.xsrfCookieName) :
+	          undefined;
+	
+	      if (xsrfValue) {
+	        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+	      }
+	    }
+	
+	    // Add headers to the request
+	    if ('setRequestHeader' in request) {
+	      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+	        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+	          // Remove Content-Type if data is undefined
+	          delete requestHeaders[key];
+	        } else {
+	          // Otherwise add header to the request
+	          request.setRequestHeader(key, val);
+	        }
+	      });
+	    }
+	
+	    // Add withCredentials to request if needed
+	    if (config.withCredentials) {
+	      request.withCredentials = true;
+	    }
+	
+	    // Add responseType to request if needed
+	    if (config.responseType) {
+	      try {
+	        request.responseType = config.responseType;
+	      } catch (e) {
+	        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+	        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+	        if (config.responseType !== 'json') {
+	          throw e;
+	        }
+	      }
+	    }
+	
+	    // Handle progress if needed
+	    if (typeof config.onDownloadProgress === 'function') {
+	      request.addEventListener('progress', config.onDownloadProgress);
+	    }
+	
+	    // Not all browsers support upload events
+	    if (typeof config.onUploadProgress === 'function' && request.upload) {
+	      request.upload.addEventListener('progress', config.onUploadProgress);
+	    }
+	
+	    if (config.cancelToken) {
+	      // Handle cancellation
+	      config.cancelToken.promise.then(function onCanceled(cancel) {
+	        if (!request) {
+	          return;
+	        }
+	
+	        request.abort();
+	        reject(cancel);
+	        // Clean up request
+	        request = null;
+	      });
+	    }
+	
+	    if (requestData === undefined) {
+	      requestData = null;
+	    }
+	
+	    // Send the request
+	    request.send(requestData);
+	  });
+	};
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
+
+/***/ }),
+/* 193 */
+/*!************************************!*\
+  !*** ./~/axios/lib/core/settle.js ***!
+  \************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var createError = __webpack_require__(/*! ./createError */ 194);
+	
+	/**
+	 * Resolve or reject a Promise based on response status.
+	 *
+	 * @param {Function} resolve A function that resolves the promise.
+	 * @param {Function} reject A function that rejects the promise.
+	 * @param {object} response The response.
+	 */
+	module.exports = function settle(resolve, reject, response) {
+	  var validateStatus = response.config.validateStatus;
+	  // Note: status is not exposed by XDomainRequest
+	  if (!response.status || !validateStatus || validateStatus(response.status)) {
+	    resolve(response);
+	  } else {
+	    reject(createError(
+	      'Request failed with status code ' + response.status,
+	      response.config,
+	      null,
+	      response.request,
+	      response
+	    ));
+	  }
+	};
+
+
+/***/ }),
+/* 194 */
+/*!*****************************************!*\
+  !*** ./~/axios/lib/core/createError.js ***!
+  \*****************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var enhanceError = __webpack_require__(/*! ./enhanceError */ 195);
+	
+	/**
+	 * Create an Error with the specified message, config, error code, request and response.
+	 *
+	 * @param {string} message The error message.
+	 * @param {Object} config The config.
+	 * @param {string} [code] The error code (for example, 'ECONNABORTED').
+	 * @param {Object} [request] The request.
+	 * @param {Object} [response] The response.
+	 * @returns {Error} The created error.
+	 */
+	module.exports = function createError(message, config, code, request, response) {
+	  var error = new Error(message);
+	  return enhanceError(error, config, code, request, response);
+	};
+
+
+/***/ }),
+/* 195 */
+/*!******************************************!*\
+  !*** ./~/axios/lib/core/enhanceError.js ***!
+  \******************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Update an Error with the specified config, error code, and response.
+	 *
+	 * @param {Error} error The error to update.
+	 * @param {Object} config The config.
+	 * @param {string} [code] The error code (for example, 'ECONNABORTED').
+	 * @param {Object} [request] The request.
+	 * @param {Object} [response] The response.
+	 * @returns {Error} The error.
+	 */
+	module.exports = function enhanceError(error, config, code, request, response) {
+	  error.config = config;
+	  if (code) {
+	    error.code = code;
+	  }
+	  error.request = request;
+	  error.response = response;
+	  return error;
+	};
+
+
+/***/ }),
+/* 196 */
+/*!*****************************************!*\
+  !*** ./~/axios/lib/helpers/buildURL.js ***!
+  \*****************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	
+	function encode(val) {
+	  return encodeURIComponent(val).
+	    replace(/%40/gi, '@').
+	    replace(/%3A/gi, ':').
+	    replace(/%24/g, '$').
+	    replace(/%2C/gi, ',').
+	    replace(/%20/g, '+').
+	    replace(/%5B/gi, '[').
+	    replace(/%5D/gi, ']');
+	}
+	
+	/**
+	 * Build a URL by appending params to the end
+	 *
+	 * @param {string} url The base of the url (e.g., http://www.google.com)
+	 * @param {object} [params] The params to be appended
+	 * @returns {string} The formatted url
+	 */
+	module.exports = function buildURL(url, params, paramsSerializer) {
+	  /*eslint no-param-reassign:0*/
+	  if (!params) {
+	    return url;
+	  }
+	
+	  var serializedParams;
+	  if (paramsSerializer) {
+	    serializedParams = paramsSerializer(params);
+	  } else if (utils.isURLSearchParams(params)) {
+	    serializedParams = params.toString();
+	  } else {
+	    var parts = [];
+	
+	    utils.forEach(params, function serialize(val, key) {
+	      if (val === null || typeof val === 'undefined') {
+	        return;
+	      }
+	
+	      if (utils.isArray(val)) {
+	        key = key + '[]';
+	      } else {
+	        val = [val];
+	      }
+	
+	      utils.forEach(val, function parseValue(v) {
+	        if (utils.isDate(v)) {
+	          v = v.toISOString();
+	        } else if (utils.isObject(v)) {
+	          v = JSON.stringify(v);
+	        }
+	        parts.push(encode(key) + '=' + encode(v));
+	      });
+	    });
+	
+	    serializedParams = parts.join('&');
+	  }
+	
+	  if (serializedParams) {
+	    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+	  }
+	
+	  return url;
+	};
+
+
+/***/ }),
+/* 197 */
+/*!*********************************************!*\
+  !*** ./~/axios/lib/helpers/parseHeaders.js ***!
+  \*********************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	
+	// Headers whose duplicates are ignored by node
+	// c.f. https://nodejs.org/api/http.html#http_message_headers
+	var ignoreDuplicateOf = [
+	  'age', 'authorization', 'content-length', 'content-type', 'etag',
+	  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+	  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+	  'referer', 'retry-after', 'user-agent'
+	];
+	
+	/**
+	 * Parse headers into an object
+	 *
+	 * ```
+	 * Date: Wed, 27 Aug 2014 08:58:49 GMT
+	 * Content-Type: application/json
+	 * Connection: keep-alive
+	 * Transfer-Encoding: chunked
+	 * ```
+	 *
+	 * @param {String} headers Headers needing to be parsed
+	 * @returns {Object} Headers parsed into an object
+	 */
+	module.exports = function parseHeaders(headers) {
+	  var parsed = {};
+	  var key;
+	  var val;
+	  var i;
+	
+	  if (!headers) { return parsed; }
+	
+	  utils.forEach(headers.split('\n'), function parser(line) {
+	    i = line.indexOf(':');
+	    key = utils.trim(line.substr(0, i)).toLowerCase();
+	    val = utils.trim(line.substr(i + 1));
+	
+	    if (key) {
+	      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+	        return;
+	      }
+	      if (key === 'set-cookie') {
+	        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+	      } else {
+	        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+	      }
+	    }
+	  });
+	
+	  return parsed;
+	};
+
+
+/***/ }),
+/* 198 */
+/*!************************************************!*\
+  !*** ./~/axios/lib/helpers/isURLSameOrigin.js ***!
+  \************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	
+	module.exports = (
+	  utils.isStandardBrowserEnv() ?
+	
+	  // Standard browser envs have full support of the APIs needed to test
+	  // whether the request URL is of the same origin as current location.
+	  (function standardBrowserEnv() {
+	    var msie = /(msie|trident)/i.test(navigator.userAgent);
+	    var urlParsingNode = document.createElement('a');
+	    var originURL;
+	
+	    /**
+	    * Parse a URL to discover it's components
+	    *
+	    * @param {String} url The URL to be parsed
+	    * @returns {Object}
+	    */
+	    function resolveURL(url) {
+	      var href = url;
+	
+	      if (msie) {
+	        // IE needs attribute set twice to normalize properties
+	        urlParsingNode.setAttribute('href', href);
+	        href = urlParsingNode.href;
+	      }
+	
+	      urlParsingNode.setAttribute('href', href);
+	
+	      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+	      return {
+	        href: urlParsingNode.href,
+	        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+	        host: urlParsingNode.host,
+	        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+	        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+	        hostname: urlParsingNode.hostname,
+	        port: urlParsingNode.port,
+	        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+	                  urlParsingNode.pathname :
+	                  '/' + urlParsingNode.pathname
+	      };
+	    }
+	
+	    originURL = resolveURL(window.location.href);
+	
+	    /**
+	    * Determine if a URL shares the same origin as the current location
+	    *
+	    * @param {String} requestURL The URL to test
+	    * @returns {boolean} True if URL shares the same origin, otherwise false
+	    */
+	    return function isURLSameOrigin(requestURL) {
+	      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+	      return (parsed.protocol === originURL.protocol &&
+	            parsed.host === originURL.host);
+	    };
+	  })() :
+	
+	  // Non standard browser envs (web workers, react-native) lack needed support.
+	  (function nonStandardBrowserEnv() {
+	    return function isURLSameOrigin() {
+	      return true;
+	    };
+	  })()
+	);
+
+
+/***/ }),
+/* 199 */
+/*!*************************************!*\
+  !*** ./~/axios/lib/helpers/btoa.js ***!
+  \*************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
+	
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+	
+	function E() {
+	  this.message = 'String contains an invalid character';
+	}
+	E.prototype = new Error;
+	E.prototype.code = 5;
+	E.prototype.name = 'InvalidCharacterError';
+	
+	function btoa(input) {
+	  var str = String(input);
+	  var output = '';
+	  for (
+	    // initialize result and counter
+	    var block, charCode, idx = 0, map = chars;
+	    // if the next str index does not exist:
+	    //   change the mapping table to "="
+	    //   check if d has no fractional digits
+	    str.charAt(idx | 0) || (map = '=', idx % 1);
+	    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+	    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+	  ) {
+	    charCode = str.charCodeAt(idx += 3 / 4);
+	    if (charCode > 0xFF) {
+	      throw new E();
+	    }
+	    block = block << 8 | charCode;
+	  }
+	  return output;
+	}
+	
+	module.exports = btoa;
+
+
+/***/ }),
+/* 200 */
+/*!****************************************!*\
+  !*** ./~/axios/lib/helpers/cookies.js ***!
+  \****************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	
+	module.exports = (
+	  utils.isStandardBrowserEnv() ?
+	
+	  // Standard browser envs support document.cookie
+	  (function standardBrowserEnv() {
+	    return {
+	      write: function write(name, value, expires, path, domain, secure) {
+	        var cookie = [];
+	        cookie.push(name + '=' + encodeURIComponent(value));
+	
+	        if (utils.isNumber(expires)) {
+	          cookie.push('expires=' + new Date(expires).toGMTString());
+	        }
+	
+	        if (utils.isString(path)) {
+	          cookie.push('path=' + path);
+	        }
+	
+	        if (utils.isString(domain)) {
+	          cookie.push('domain=' + domain);
+	        }
+	
+	        if (secure === true) {
+	          cookie.push('secure');
+	        }
+	
+	        document.cookie = cookie.join('; ');
+	      },
+	
+	      read: function read(name) {
+	        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+	        return (match ? decodeURIComponent(match[3]) : null);
+	      },
+	
+	      remove: function remove(name) {
+	        this.write(name, '', Date.now() - 86400000);
+	      }
+	    };
+	  })() :
+	
+	  // Non standard browser env (web workers, react-native) lack needed support.
+	  (function nonStandardBrowserEnv() {
+	    return {
+	      write: function write() {},
+	      read: function read() { return null; },
+	      remove: function remove() {}
+	    };
+	  })()
+	);
+
+
+/***/ }),
+/* 201 */
+/*!************************************************!*\
+  !*** ./~/axios/lib/core/InterceptorManager.js ***!
+  \************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	
+	function InterceptorManager() {
+	  this.handlers = [];
+	}
+	
+	/**
+	 * Add a new interceptor to the stack
+	 *
+	 * @param {Function} fulfilled The function to handle `then` for a `Promise`
+	 * @param {Function} rejected The function to handle `reject` for a `Promise`
+	 *
+	 * @return {Number} An ID used to remove interceptor later
+	 */
+	InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+	  this.handlers.push({
+	    fulfilled: fulfilled,
+	    rejected: rejected
+	  });
+	  return this.handlers.length - 1;
+	};
+	
+	/**
+	 * Remove an interceptor from the stack
+	 *
+	 * @param {Number} id The ID that was returned by `use`
+	 */
+	InterceptorManager.prototype.eject = function eject(id) {
+	  if (this.handlers[id]) {
+	    this.handlers[id] = null;
+	  }
+	};
+	
+	/**
+	 * Iterate over all the registered interceptors
+	 *
+	 * This method is particularly useful for skipping over any
+	 * interceptors that may have become `null` calling `eject`.
+	 *
+	 * @param {Function} fn The function to call for each interceptor
+	 */
+	InterceptorManager.prototype.forEach = function forEach(fn) {
+	  utils.forEach(this.handlers, function forEachHandler(h) {
+	    if (h !== null) {
+	      fn(h);
+	    }
+	  });
+	};
+	
+	module.exports = InterceptorManager;
+
+
+/***/ }),
+/* 202 */
+/*!*********************************************!*\
+  !*** ./~/axios/lib/core/dispatchRequest.js ***!
+  \*********************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	var transformData = __webpack_require__(/*! ./transformData */ 203);
+	var isCancel = __webpack_require__(/*! ../cancel/isCancel */ 204);
+	var defaults = __webpack_require__(/*! ../defaults */ 190);
+	var isAbsoluteURL = __webpack_require__(/*! ./../helpers/isAbsoluteURL */ 205);
+	var combineURLs = __webpack_require__(/*! ./../helpers/combineURLs */ 206);
+	
+	/**
+	 * Throws a `Cancel` if cancellation has been requested.
+	 */
+	function throwIfCancellationRequested(config) {
+	  if (config.cancelToken) {
+	    config.cancelToken.throwIfRequested();
+	  }
+	}
+	
+	/**
+	 * Dispatch a request to the server using the configured adapter.
+	 *
+	 * @param {object} config The config that is to be used for the request
+	 * @returns {Promise} The Promise to be fulfilled
+	 */
+	module.exports = function dispatchRequest(config) {
+	  throwIfCancellationRequested(config);
+	
+	  // Support baseURL config
+	  if (config.baseURL && !isAbsoluteURL(config.url)) {
+	    config.url = combineURLs(config.baseURL, config.url);
+	  }
+	
+	  // Ensure headers exist
+	  config.headers = config.headers || {};
+	
+	  // Transform request data
+	  config.data = transformData(
+	    config.data,
+	    config.headers,
+	    config.transformRequest
+	  );
+	
+	  // Flatten headers
+	  config.headers = utils.merge(
+	    config.headers.common || {},
+	    config.headers[config.method] || {},
+	    config.headers || {}
+	  );
+	
+	  utils.forEach(
+	    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+	    function cleanHeaderConfig(method) {
+	      delete config.headers[method];
+	    }
+	  );
+	
+	  var adapter = config.adapter || defaults.adapter;
+	
+	  return adapter(config).then(function onAdapterResolution(response) {
+	    throwIfCancellationRequested(config);
+	
+	    // Transform response data
+	    response.data = transformData(
+	      response.data,
+	      response.headers,
+	      config.transformResponse
+	    );
+	
+	    return response;
+	  }, function onAdapterRejection(reason) {
+	    if (!isCancel(reason)) {
+	      throwIfCancellationRequested(config);
+	
+	      // Transform response data
+	      if (reason && reason.response) {
+	        reason.response.data = transformData(
+	          reason.response.data,
+	          reason.response.headers,
+	          config.transformResponse
+	        );
+	      }
+	    }
+	
+	    return Promise.reject(reason);
+	  });
+	};
+
+
+/***/ }),
+/* 203 */
 /*!*******************************************!*\
-  !*** ./src/app/components/SecondChild.js ***!
+  !*** ./~/axios/lib/core/transformData.js ***!
   \*******************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var utils = __webpack_require__(/*! ./../utils */ 186);
+	
+	/**
+	 * Transform the data for a request or a response
+	 *
+	 * @param {Object|String} data The data to be transformed
+	 * @param {Array} headers The headers for the request or response
+	 * @param {Array|Function} fns A single function or Array of functions
+	 * @returns {*} The resulting transformed data
+	 */
+	module.exports = function transformData(data, headers, fns) {
+	  /*eslint no-param-reassign:0*/
+	  utils.forEach(fns, function transform(fn) {
+	    data = fn(data, headers);
+	  });
+	
+	  return data;
+	};
+
+
+/***/ }),
+/* 204 */
+/*!****************************************!*\
+  !*** ./~/axios/lib/cancel/isCancel.js ***!
+  \****************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function isCancel(value) {
+	  return !!(value && value.__CANCEL__);
+	};
+
+
+/***/ }),
+/* 205 */
+/*!**********************************************!*\
+  !*** ./~/axios/lib/helpers/isAbsoluteURL.js ***!
+  \**********************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Determines whether the specified URL is absolute
+	 *
+	 * @param {string} url The URL to test
+	 * @returns {boolean} True if the specified URL is absolute, otherwise false
+	 */
+	module.exports = function isAbsoluteURL(url) {
+	  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+	  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+	  // by any combination of letters, digits, plus, period, or hyphen.
+	  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+	};
+
+
+/***/ }),
+/* 206 */
+/*!********************************************!*\
+  !*** ./~/axios/lib/helpers/combineURLs.js ***!
+  \********************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Creates a new URL by combining the specified URLs
+	 *
+	 * @param {string} baseURL The base URL
+	 * @param {string} relativeURL The relative URL
+	 * @returns {string} The combined URL
+	 */
+	module.exports = function combineURLs(baseURL, relativeURL) {
+	  return relativeURL
+	    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+	    : baseURL;
+	};
+
+
+/***/ }),
+/* 207 */
+/*!**************************************!*\
+  !*** ./~/axios/lib/cancel/Cancel.js ***!
+  \**************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * A `Cancel` is an object that is thrown when an operation is canceled.
+	 *
+	 * @class
+	 * @param {string=} message The message.
+	 */
+	function Cancel(message) {
+	  this.message = message;
+	}
+	
+	Cancel.prototype.toString = function toString() {
+	  return 'Cancel' + (this.message ? ': ' + this.message : '');
+	};
+	
+	Cancel.prototype.__CANCEL__ = true;
+	
+	module.exports = Cancel;
+
+
+/***/ }),
+/* 208 */
+/*!*******************************************!*\
+  !*** ./~/axios/lib/cancel/CancelToken.js ***!
+  \*******************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Cancel = __webpack_require__(/*! ./Cancel */ 207);
+	
+	/**
+	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
+	 *
+	 * @class
+	 * @param {Function} executor The executor function.
+	 */
+	function CancelToken(executor) {
+	  if (typeof executor !== 'function') {
+	    throw new TypeError('executor must be a function.');
+	  }
+	
+	  var resolvePromise;
+	  this.promise = new Promise(function promiseExecutor(resolve) {
+	    resolvePromise = resolve;
+	  });
+	
+	  var token = this;
+	  executor(function cancel(message) {
+	    if (token.reason) {
+	      // Cancellation has already been requested
+	      return;
+	    }
+	
+	    token.reason = new Cancel(message);
+	    resolvePromise(token.reason);
+	  });
+	}
+	
+	/**
+	 * Throws a `Cancel` if cancellation has been requested.
+	 */
+	CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+	  if (this.reason) {
+	    throw this.reason;
+	  }
+	};
+	
+	/**
+	 * Returns an object that contains a new `CancelToken` and a function that, when called,
+	 * cancels the `CancelToken`.
+	 */
+	CancelToken.source = function source() {
+	  var cancel;
+	  var token = new CancelToken(function executor(c) {
+	    cancel = c;
+	  });
+	  return {
+	    token: token,
+	    cancel: cancel
+	  };
+	};
+	
+	module.exports = CancelToken;
+
+
+/***/ }),
+/* 209 */
+/*!***************************************!*\
+  !*** ./~/axios/lib/helpers/spread.js ***!
+  \***************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	/**
+	 * Syntactic sugar for invoking a function and expanding an array for arguments.
+	 *
+	 * Common use case would be to use `Function.prototype.apply`.
+	 *
+	 *  ```js
+	 *  function f(x, y, z) {}
+	 *  var args = [1, 2, 3];
+	 *  f.apply(null, args);
+	 *  ```
+	 *
+	 * With `spread` this example can be re-written.
+	 *
+	 *  ```js
+	 *  spread(function(x, y, z) {})([1, 2, 3]);
+	 *  ```
+	 *
+	 * @param {Function} callback
+	 * @returns {Function}
+	 */
+	module.exports = function spread(callback) {
+	  return function wrap(arr) {
+	    return callback.apply(null, arr);
+	  };
+	};
+
+
+/***/ }),
+/* 210 */
+/*!*************************************!*\
+  !*** ./src/app/components/Local.js ***!
+  \*************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	    value: true
 	});
-	exports.SecondChild = undefined;
+	exports.LocalScrn = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
@@ -22713,59 +24340,1507 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var SecondChild = exports.SecondChild = function (_React$Component) {
-		_inherits(SecondChild, _React$Component);
+	var LocalScrn = exports.LocalScrn = function (_React$Component) {
+	    _inherits(LocalScrn, _React$Component);
 	
-		function SecondChild() {
-			_classCallCheck(this, SecondChild);
+	    // class ScreenOne extends Component {
+	    function LocalScrn() {
+	        _classCallCheck(this, LocalScrn);
 	
-			return _possibleConstructorReturn(this, (SecondChild.__proto__ || Object.getPrototypeOf(SecondChild)).apply(this, arguments));
-		}
+	        var _this = _possibleConstructorReturn(this, (LocalScrn.__proto__ || Object.getPrototypeOf(LocalScrn)).call(this));
 	
-		_createClass(SecondChild, [{
-			key: "render",
-			value: function render() {
-				var hello = "";
+	        _this.state = { localData: {
+	                "cod": "200",
+	                "message": 0.0032,
+	                "cnt": 36,
+	                "list": [{
+	                    "dt": 1487246400,
+	                    "main": {
+	                        "temp": 286.67,
+	                        "temp_min": 281.556,
+	                        "temp_max": 286.67,
+	                        "pressure": 972.73,
+	                        "sea_level": 1046.46,
+	                        "grnd_level": 972.73,
+	                        "humidity": 75,
+	                        "temp_kf": 5.11
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.81,
+	                        "deg": 247.501
+	                    },
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-16 12:00:00"
+	                }, {
+	                    "dt": 1487257200,
+	                    "main": {
+	                        "temp": 285.66,
+	                        "temp_min": 281.821,
+	                        "temp_max": 285.66,
+	                        "pressure": 970.91,
+	                        "sea_level": 1044.32,
+	                        "grnd_level": 970.91,
+	                        "humidity": 70,
+	                        "temp_kf": 3.84
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.59,
+	                        "deg": 290.501
+	                    },
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-16 15:00:00"
+	                }, {
+	                    "dt": 1487268000,
+	                    "main": {
+	                        "temp": 277.05,
+	                        "temp_min": 274.498,
+	                        "temp_max": 277.05,
+	                        "pressure": 970.44,
+	                        "sea_level": 1044.7,
+	                        "grnd_level": 970.44,
+	                        "humidity": 90,
+	                        "temp_kf": 2.56
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.41,
+	                        "deg": 263.5
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-16 18:00:00"
+	                }, {
+	                    "dt": 1487278800,
+	                    "main": {
+	                        "temp": 272.78,
+	                        "temp_min": 271.503,
+	                        "temp_max": 272.78,
+	                        "pressure": 969.32,
+	                        "sea_level": 1044.14,
+	                        "grnd_level": 969.32,
+	                        "humidity": 80,
+	                        "temp_kf": 1.28
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 2.24,
+	                        "deg": 205.502
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-16 21:00:00"
+	                }, {
+	                    "dt": 1487289600,
+	                    "main": {
+	                        "temp": 273.341,
+	                        "temp_min": 273.341,
+	                        "temp_max": 273.341,
+	                        "pressure": 968.14,
+	                        "sea_level": 1042.96,
+	                        "grnd_level": 968.14,
+	                        "humidity": 85,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 803,
+	                        "main": "Clouds",
+	                        "description": "broken clouds",
+	                        "icon": "04n"
+	                    }],
+	                    "clouds": {
+	                        "all": 76
+	                    },
+	                    "wind": {
+	                        "speed": 3.59,
+	                        "deg": 224.003
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-17 00:00:00"
+	                }, {
+	                    "dt": 1487300400,
+	                    "main": {
+	                        "temp": 275.568,
+	                        "temp_min": 275.568,
+	                        "temp_max": 275.568,
+	                        "pressure": 966.6,
+	                        "sea_level": 1041.39,
+	                        "grnd_level": 966.6,
+	                        "humidity": 89,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 76
+	                    },
+	                    "wind": {
+	                        "speed": 3.77,
+	                        "deg": 237.002
+	                    },
+	                    "rain": {
+	                        "3h": 0.32
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-17 03:00:00"
+	                }, {
+	                    "dt": 1487311200,
+	                    "main": {
+	                        "temp": 276.478,
+	                        "temp_min": 276.478,
+	                        "temp_max": 276.478,
+	                        "pressure": 966.45,
+	                        "sea_level": 1041.21,
+	                        "grnd_level": 966.45,
+	                        "humidity": 97,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 501,
+	                        "main": "Rain",
+	                        "description": "moderate rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 92
+	                    },
+	                    "wind": {
+	                        "speed": 3.81,
+	                        "deg": 268.005
+	                    },
+	                    "rain": {
+	                        "3h": 4.9
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-17 06:00:00"
+	                }, {
+	                    "dt": 1487322000,
+	                    "main": {
+	                        "temp": 276.67,
+	                        "temp_min": 276.67,
+	                        "temp_max": 276.67,
+	                        "pressure": 967.41,
+	                        "sea_level": 1041.95,
+	                        "grnd_level": 967.41,
+	                        "humidity": 100,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10d"
+	                    }],
+	                    "clouds": {
+	                        "all": 64
+	                    },
+	                    "wind": {
+	                        "speed": 2.6,
+	                        "deg": 266.504
+	                    },
+	                    "rain": {
+	                        "3h": 1.37
+	                    },
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-17 09:00:00"
+	                }, {
+	                    "dt": 1487332800,
+	                    "main": {
+	                        "temp": 278.253,
+	                        "temp_min": 278.253,
+	                        "temp_max": 278.253,
+	                        "pressure": 966.98,
+	                        "sea_level": 1040.89,
+	                        "grnd_level": 966.98,
+	                        "humidity": 95,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10d"
+	                    }],
+	                    "clouds": {
+	                        "all": 92
+	                    },
+	                    "wind": {
+	                        "speed": 3.17,
+	                        "deg": 261.501
+	                    },
+	                    "rain": {
+	                        "3h": 0.12
+	                    },
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-17 12:00:00"
+	                }, {
+	                    "dt": 1487343600,
+	                    "main": {
+	                        "temp": 276.455,
+	                        "temp_min": 276.455,
+	                        "temp_max": 276.455,
+	                        "pressure": 966.38,
+	                        "sea_level": 1040.17,
+	                        "grnd_level": 966.38,
+	                        "humidity": 99,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10d"
+	                    }],
+	                    "clouds": {
+	                        "all": 92
+	                    },
+	                    "wind": {
+	                        "speed": 3.21,
+	                        "deg": 268.001
+	                    },
+	                    "rain": {
+	                        "3h": 2.12
+	                    },
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-17 15:00:00"
+	                }, {
+	                    "dt": 1487354400,
+	                    "main": {
+	                        "temp": 275.639,
+	                        "temp_min": 275.639,
+	                        "temp_max": 275.639,
+	                        "pressure": 966.39,
+	                        "sea_level": 1040.65,
+	                        "grnd_level": 966.39,
+	                        "humidity": 95,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 88
+	                    },
+	                    "wind": {
+	                        "speed": 3.17,
+	                        "deg": 258.001
+	                    },
+	                    "rain": {
+	                        "3h": 0.7
+	                    },
+	                    "snow": {
+	                        "3h": 0.0775
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-17 18:00:00"
+	                }, {
+	                    "dt": 1487365200,
+	                    "main": {
+	                        "temp": 275.459,
+	                        "temp_min": 275.459,
+	                        "temp_max": 275.459,
+	                        "pressure": 966.3,
+	                        "sea_level": 1040.8,
+	                        "grnd_level": 966.3,
+	                        "humidity": 96,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 88
+	                    },
+	                    "wind": {
+	                        "speed": 3.71,
+	                        "deg": 265.503
+	                    },
+	                    "rain": {
+	                        "3h": 1.16
+	                    },
+	                    "snow": {
+	                        "3h": 0.075
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-17 21:00:00"
+	                }, {
+	                    "dt": 1487376000,
+	                    "main": {
+	                        "temp": 275.035,
+	                        "temp_min": 275.035,
+	                        "temp_max": 275.035,
+	                        "pressure": 966.43,
+	                        "sea_level": 1041.02,
+	                        "grnd_level": 966.43,
+	                        "humidity": 99,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 92
+	                    },
+	                    "wind": {
+	                        "speed": 3.56,
+	                        "deg": 273.5
+	                    },
+	                    "rain": {
+	                        "3h": 1.37
+	                    },
+	                    "snow": {
+	                        "3h": 0.1525
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-18 00:00:00"
+	                }, {
+	                    "dt": 1487386800,
+	                    "main": {
+	                        "temp": 274.965,
+	                        "temp_min": 274.965,
+	                        "temp_max": 274.965,
+	                        "pressure": 966.36,
+	                        "sea_level": 1041.17,
+	                        "grnd_level": 966.36,
+	                        "humidity": 97,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 88
+	                    },
+	                    "wind": {
+	                        "speed": 2.66,
+	                        "deg": 285.502
+	                    },
+	                    "rain": {
+	                        "3h": 0.79
+	                    },
+	                    "snow": {
+	                        "3h": 0.52
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-18 03:00:00"
+	                }, {
+	                    "dt": 1487397600,
+	                    "main": {
+	                        "temp": 274.562,
+	                        "temp_min": 274.562,
+	                        "temp_max": 274.562,
+	                        "pressure": 966.75,
+	                        "sea_level": 1041.57,
+	                        "grnd_level": 966.75,
+	                        "humidity": 98,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10n"
+	                    }],
+	                    "clouds": {
+	                        "all": 88
+	                    },
+	                    "wind": {
+	                        "speed": 1.46,
+	                        "deg": 276.5
+	                    },
+	                    "rain": {
+	                        "3h": 0.08
+	                    },
+	                    "snow": {
+	                        "3h": 0.06
+	                    },
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-18 06:00:00"
+	                }, {
+	                    "dt": 1487408400,
+	                    "main": {
+	                        "temp": 275.648,
+	                        "temp_min": 275.648,
+	                        "temp_max": 275.648,
+	                        "pressure": 967.21,
+	                        "sea_level": 1041.74,
+	                        "grnd_level": 967.21,
+	                        "humidity": 99,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 500,
+	                        "main": "Rain",
+	                        "description": "light rain",
+	                        "icon": "10d"
+	                    }],
+	                    "clouds": {
+	                        "all": 56
+	                    },
+	                    "wind": {
+	                        "speed": 1.5,
+	                        "deg": 251.008
+	                    },
+	                    "rain": {
+	                        "3h": 0.02
+	                    },
+	                    "snow": {
+	                        "3h": 0.03
+	                    },
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-18 09:00:00"
+	                }, {
+	                    "dt": 1487419200,
+	                    "main": {
+	                        "temp": 277.927,
+	                        "temp_min": 277.927,
+	                        "temp_max": 277.927,
+	                        "pressure": 966.06,
+	                        "sea_level": 1039.98,
+	                        "grnd_level": 966.06,
+	                        "humidity": 95,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "02d"
+	                    }],
+	                    "clouds": {
+	                        "all": 8
+	                    },
+	                    "wind": {
+	                        "speed": 0.86,
+	                        "deg": 244.004
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-18 12:00:00"
+	                }, {
+	                    "dt": 1487430000,
+	                    "main": {
+	                        "temp": 278.367,
+	                        "temp_min": 278.367,
+	                        "temp_max": 278.367,
+	                        "pressure": 964.57,
+	                        "sea_level": 1038.35,
+	                        "grnd_level": 964.57,
+	                        "humidity": 89,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "02d"
+	                    }],
+	                    "clouds": {
+	                        "all": 8
+	                    },
+	                    "wind": {
+	                        "speed": 1.62,
+	                        "deg": 79.5024
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-18 15:00:00"
+	                }, {
+	                    "dt": 1487440800,
+	                    "main": {
+	                        "temp": 273.797,
+	                        "temp_min": 273.797,
+	                        "temp_max": 273.797,
+	                        "pressure": 964.13,
+	                        "sea_level": 1038.48,
+	                        "grnd_level": 964.13,
+	                        "humidity": 91,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 2.42,
+	                        "deg": 77.0026
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-18 18:00:00"
+	                }, {
+	                    "dt": 1487451600,
+	                    "main": {
+	                        "temp": 271.239,
+	                        "temp_min": 271.239,
+	                        "temp_max": 271.239,
+	                        "pressure": 963.39,
+	                        "sea_level": 1038.21,
+	                        "grnd_level": 963.39,
+	                        "humidity": 93,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 2.42,
+	                        "deg": 95.5017
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-18 21:00:00"
+	                }, {
+	                    "dt": 1487462400,
+	                    "main": {
+	                        "temp": 269.553,
+	                        "temp_min": 269.553,
+	                        "temp_max": 269.553,
+	                        "pressure": 962.39,
+	                        "sea_level": 1037.44,
+	                        "grnd_level": 962.39,
+	                        "humidity": 92,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.96,
+	                        "deg": 101.004
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-19 00:00:00"
+	                }, {
+	                    "dt": 1487473200,
+	                    "main": {
+	                        "temp": 268.198,
+	                        "temp_min": 268.198,
+	                        "temp_max": 268.198,
+	                        "pressure": 961.28,
+	                        "sea_level": 1036.51,
+	                        "grnd_level": 961.28,
+	                        "humidity": 84,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.06,
+	                        "deg": 121.5
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-19 03:00:00"
+	                }, {
+	                    "dt": 1487484000,
+	                    "main": {
+	                        "temp": 267.295,
+	                        "temp_min": 267.295,
+	                        "temp_max": 267.295,
+	                        "pressure": 961.16,
+	                        "sea_level": 1036.45,
+	                        "grnd_level": 961.16,
+	                        "humidity": 86,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.17,
+	                        "deg": 155.005
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-19 06:00:00"
+	                }, {
+	                    "dt": 1487494800,
+	                    "main": {
+	                        "temp": 272.956,
+	                        "temp_min": 272.956,
+	                        "temp_max": 272.956,
+	                        "pressure": 962.03,
+	                        "sea_level": 1036.85,
+	                        "grnd_level": 962.03,
+	                        "humidity": 84,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.66,
+	                        "deg": 195.002
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-19 09:00:00"
+	                }, {
+	                    "dt": 1487505600,
+	                    "main": {
+	                        "temp": 277.422,
+	                        "temp_min": 277.422,
+	                        "temp_max": 277.422,
+	                        "pressure": 962.23,
+	                        "sea_level": 1036.06,
+	                        "grnd_level": 962.23,
+	                        "humidity": 89,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.32,
+	                        "deg": 357.003
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-19 12:00:00"
+	                }, {
+	                    "dt": 1487516400,
+	                    "main": {
+	                        "temp": 277.984,
+	                        "temp_min": 277.984,
+	                        "temp_max": 277.984,
+	                        "pressure": 962.15,
+	                        "sea_level": 1035.86,
+	                        "grnd_level": 962.15,
+	                        "humidity": 87,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.58,
+	                        "deg": 48.5031
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-19 15:00:00"
+	                }, {
+	                    "dt": 1487527200,
+	                    "main": {
+	                        "temp": 272.459,
+	                        "temp_min": 272.459,
+	                        "temp_max": 272.459,
+	                        "pressure": 963.31,
+	                        "sea_level": 1037.81,
+	                        "grnd_level": 963.31,
+	                        "humidity": 90,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.16,
+	                        "deg": 75.5042
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-19 18:00:00"
+	                }, {
+	                    "dt": 1487538000,
+	                    "main": {
+	                        "temp": 269.473,
+	                        "temp_min": 269.473,
+	                        "temp_max": 269.473,
+	                        "pressure": 964.65,
+	                        "sea_level": 1039.76,
+	                        "grnd_level": 964.65,
+	                        "humidity": 83,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.12,
+	                        "deg": 174.002
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-19 21:00:00"
+	                }, {
+	                    "dt": 1487548800,
+	                    "main": {
+	                        "temp": 268.793,
+	                        "temp_min": 268.793,
+	                        "temp_max": 268.793,
+	                        "pressure": 965.92,
+	                        "sea_level": 1041.32,
+	                        "grnd_level": 965.92,
+	                        "humidity": 80,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 2.11,
+	                        "deg": 207.502
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-20 00:00:00"
+	                }, {
+	                    "dt": 1487559600,
+	                    "main": {
+	                        "temp": 268.106,
+	                        "temp_min": 268.106,
+	                        "temp_max": 268.106,
+	                        "pressure": 966.4,
+	                        "sea_level": 1042.18,
+	                        "grnd_level": 966.4,
+	                        "humidity": 85,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.67,
+	                        "deg": 191.001
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-20 03:00:00"
+	                }, {
+	                    "dt": 1487570400,
+	                    "main": {
+	                        "temp": 267.655,
+	                        "temp_min": 267.655,
+	                        "temp_max": 267.655,
+	                        "pressure": 967.4,
+	                        "sea_level": 1043.43,
+	                        "grnd_level": 967.4,
+	                        "humidity": 84,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01n"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 1.61,
+	                        "deg": 194.001
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-20 06:00:00"
+	                }, {
+	                    "dt": 1487581200,
+	                    "main": {
+	                        "temp": 273.75,
+	                        "temp_min": 273.75,
+	                        "temp_max": 273.75,
+	                        "pressure": 968.84,
+	                        "sea_level": 1044.23,
+	                        "grnd_level": 968.84,
+	                        "humidity": 83,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 2.49,
+	                        "deg": 208.5
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-20 09:00:00"
+	                }, {
+	                    "dt": 1487592000,
+	                    "main": {
+	                        "temp": 279.302,
+	                        "temp_min": 279.302,
+	                        "temp_max": 279.302,
+	                        "pressure": 968.37,
+	                        "sea_level": 1042.52,
+	                        "grnd_level": 968.37,
+	                        "humidity": 83,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 2.46,
+	                        "deg": 252.001
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-20 12:00:00"
+	                }, {
+	                    "dt": 1487602800,
+	                    "main": {
+	                        "temp": 279.343,
+	                        "temp_min": 279.343,
+	                        "temp_max": 279.343,
+	                        "pressure": 967.9,
+	                        "sea_level": 1041.64,
+	                        "grnd_level": 967.9,
+	                        "humidity": 81,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 800,
+	                        "main": "Clear",
+	                        "description": "clear sky",
+	                        "icon": "01d"
+	                    }],
+	                    "clouds": {
+	                        "all": 0
+	                    },
+	                    "wind": {
+	                        "speed": 3.21,
+	                        "deg": 268.001
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "d"
+	                    },
+	                    "dt_txt": "2017-02-20 15:00:00"
+	                }, {
+	                    "dt": 1487613600,
+	                    "main": {
+	                        "temp": 274.443,
+	                        "temp_min": 274.443,
+	                        "temp_max": 274.443,
+	                        "pressure": 968.19,
+	                        "sea_level": 1042.66,
+	                        "grnd_level": 968.19,
+	                        "humidity": 88,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 801,
+	                        "main": "Clouds",
+	                        "description": "few clouds",
+	                        "icon": "02n"
+	                    }],
+	                    "clouds": {
+	                        "all": 24
+	                    },
+	                    "wind": {
+	                        "speed": 3.27,
+	                        "deg": 257.501
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-20 18:00:00"
+	                }, {
+	                    "dt": 1487624400,
+	                    "main": {
+	                        "temp": 272.424,
+	                        "temp_min": 272.424,
+	                        "temp_max": 272.424,
+	                        "pressure": 968.38,
+	                        "sea_level": 1043.17,
+	                        "grnd_level": 968.38,
+	                        "humidity": 85,
+	                        "temp_kf": 0
+	                    },
+	                    "weather": [{
+	                        "id": 801,
+	                        "main": "Clouds",
+	                        "description": "few clouds",
+	                        "icon": "02n"
+	                    }],
+	                    "clouds": {
+	                        "all": 20
+	                    },
+	                    "wind": {
+	                        "speed": 3.57,
+	                        "deg": 255.503
+	                    },
+	                    "rain": {},
+	                    "snow": {},
+	                    "sys": {
+	                        "pod": "n"
+	                    },
+	                    "dt_txt": "2017-02-20 21:00:00"
+	                }],
+	                "city": {
+	                    "id": 6940463,
+	                    "name": "Altstadt",
+	                    "coord": {
+	                        "lat": 48.137,
+	                        "lon": 11.5752
+	                    },
+	                    "country": "none"
+	                } //end localData
+	            } //end state
+	        };return _this;
+	    } //end constructor
 	
-				return _react2.default.createElement(
-					"div",
-					null,
-					_react2.default.createElement(
-						"h3",
-						{ className: "special" },
-						"My Second Component"
-					),
-					_react2.default.createElement(
-						"p",
-						null,
-						this.props.name
-					)
-				);
-			}
-		}]);
+	    _createClass(LocalScrn, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {
+	            console.log("LocalScrn - Component mounted - do we have data: ", this.props.localData);
+	            // this.getArticleData(this.props.userId);
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            console.log("Local Screen JSON data: ", this.state.localData);
+	            if (this.props.visible != true) {
+	                console.log("LocalScreen is off");
+	                return false;
+	            }
 	
-		return SecondChild;
-	}(_react2.default.Component);
+	            var location = this.state.localData.city.name;
+	            var weather = this.state.localData.list;
+	
+	            console.log("Weather report: ", weather[0]);
+	            var dataArr = [];
+	
+	            /*    for (var i=0 ; i < 5 ; ++i ) {
+	                    var dataObj = {};
+	                    dataObj.temp =  convertTemp (weather[i].main.temp);
+	                    dataObj.low =  convertTemp (weather[i].main.temp_min);
+	                    dataObj.high =  convertTemp (weather[i].main.temp_max);
+	                    dataObj.forecast = weather[i].weather[0].description;
+	                    dataArr.push(dataObj);
+	                }    */
+	
+	            console.log("Final dataArr: ", dataArr);
+	            var time = convertDate(weather[0].dt_txt);
+	            var temp = convertTemp(weather[0].main.temp);
+	            var low = convertTemp(weather[0].main.temp_min);
+	            var high = convertTemp(weather[0].main.temp_max);
+	            var forecast = weather[0].weather[0].description;
+	
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "center option animated fadeIn mainScrn" },
+	                _react2.default.createElement(
+	                    "h3",
+	                    { className: "fontStyle" },
+	                    " Local Juice"
+	                ),
+	                "Five Day Forcast for  ",
+	                location,
+	                _react2.default.createElement("p", null),
+	                time,
+	                _react2.default.createElement("p", null),
+	                _react2.default.createElement(
+	                    "table",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day One"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Two"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Three"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Four"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Five"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        )
+	                    )
+	                )
+	            ); //end return
+	
+	            function handleClick() {} //end handleItemClick
+	
+	            function convertTemp(ktemp) {
+	                console.log("convertTemp: ", ktemp);
+	                ktemp = parseFloat(ktemp);
+	                var val = (ktemp - 273.15) * 1.8 + 32;
+	                val = Math.round(val);
+	                return val;
+	            } //end convertTemp
+	
+	            function convertDate(date) {
+	                console.log("convertDate: ", date);
+	                date = date.split("");
+	                console.log("date: ", date);
+	                var d = new Date(date);
+	                return date;
+	            }
+	        } //end render
+	
+	    }]);
+	
+	    return LocalScrn;
+	}(_react2.default.Component); //end Component
 
 /***/ }),
-/* 186 */
+/* 211 */
+/*!************************************!*\
+  !*** ./src/app/components/Away.js ***!
+  \************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.AwayScrn = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _LondonScrn = __webpack_require__(/*! ./LondonScrn */ 212);
+	
+	var _DubaiScrn = __webpack_require__(/*! ./DubaiScrn */ 215);
+	
+	var _SingaporeScrn = __webpack_require__(/*! ./SingaporeScrn */ 216);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AwayScrn = exports.AwayScrn = function (_React$Component) {
+	    _inherits(AwayScrn, _React$Component);
+	
+	    function AwayScrn() {
+	        var _this$state;
+	
+	        _classCallCheck(this, AwayScrn);
+	
+	        var _this = _possibleConstructorReturn(this, (AwayScrn.__proto__ || Object.getPrototypeOf(AwayScrn)).call(this));
+	
+	        _this.state = (_this$state = {
+	            singapore: true,
+	            dubai: false
+	        }, _defineProperty(_this$state, "singapore", false), _defineProperty(_this$state, "data", []), _this$state);
+	        return _this;
+	    }
+	
+	    _createClass(AwayScrn, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {}
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var _this2 = this;
+	
+	            if (this.props.visible != true) {
+	                console.log("Away Screen is off");
+	                return false;
+	            }
+	
+	            var displayObj = {
+	                london: this.props.londonData,
+	                dubai: this.props.dubaiData,
+	                singapore: this.props.singaporeData
+	            };
+	
+	            console.log("Our Away Data: ", displayObj);
+	
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "center option animated fadeIn mainScrn" },
+	                _react2.default.createElement(
+	                    "h3",
+	                    { className: "fontStyle" },
+	                    "Lands Far Far Away"
+	                ),
+	                _react2.default.createElement(
+	                    "button",
+	                    { onClick: function onClick() {
+	                            return _this2.setState({ london: true, dubai: false, singapore: false });
+	                        } },
+	                    "London"
+	                ),
+	                _react2.default.createElement(
+	                    "button",
+	                    { onClick: function onClick() {
+	                            return _this2.setState({ london: false, dubai: true, singapore: false });
+	                        } },
+	                    "Dubai"
+	                ),
+	                _react2.default.createElement(
+	                    "button",
+	                    { onClick: function onClick() {
+	                            return _this2.setState({ london: false, dubai: false, singapore: true });
+	                        } },
+	                    "Singapore"
+	                ),
+	                _react2.default.createElement(_LondonScrn.LondonScrn, { visible: this.state.london, data: displayObj.london }),
+	                _react2.default.createElement(_DubaiScrn.DubaiScrn, { visible: this.state.dubai, data: displayObj.dubai }),
+	                _react2.default.createElement(_SingaporeScrn.SingaporeScrn, { visible: this.state.singapore, data: displayObj.singapore })
+	            ); //end return
+	
+	            function handleClick() {} //end handleItemClick
+	
+	        } //end render
+	
+	    }]);
+	
+	    return AwayScrn;
+	}(_react2.default.Component); //end Component
+
+/***/ }),
+/* 212 */
 /*!******************************************!*\
-  !*** ./src/app/components/MyListView.js ***!
+  !*** ./src/app/components/LondonScrn.js ***!
   \******************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	    value: true
 	});
-	exports.MyListView = undefined;
+	exports.LondonScrn = undefined;
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(/*! react */ 1);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _convertTemp = __webpack_require__(/*! ../utils/convertTemp */ 213);
+	
+	var _convertDate = __webpack_require__(/*! ../utils/convertDate */ 214);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -22775,36 +25850,1954 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var MyListView = exports.MyListView = function (_React$Component) {
-		_inherits(MyListView, _React$Component);
+	var LondonScrn = exports.LondonScrn = function (_React$Component) {
+	    _inherits(LondonScrn, _React$Component);
 	
-		//manage external props
-		function MyListView(props) {
-			_classCallCheck(this, MyListView);
+	    function LondonScrn() {
+	        _classCallCheck(this, LondonScrn);
 	
-			return _possibleConstructorReturn(this, (MyListView.__proto__ || Object.getPrototypeOf(MyListView)).call(this));
-		} //end constructor
+	        var _this = _possibleConstructorReturn(this, (LondonScrn.__proto__ || Object.getPrototypeOf(LondonScrn)).call(this));
 	
-		_createClass(MyListView, [{
-			key: "render",
-			value: function render() {
+	        _this.state = {
+	            data: []
+	        };
+	        return _this;
+	    }
 	
-				return _react2.default.createElement(
-					"div",
-					null,
-					_react2.default.createElement(
-						"h3",
-						{ className: "" },
-						"My ListView Component"
-					)
-				);
-			}
-		}]);
+	    _createClass(LondonScrn, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {}
+	    }, {
+	        key: "render",
+	        value: function render() {
 	
-		return MyListView;
-	}(_react2.default.Component);
+	            if (this.props.visible != true) {
+	                console.log("London Screen is off");
+	                return false;
+	            }
 	
-	MyListView.propTypes = {};
+	            console.log("London props data: ", this.props.data);
+	            var location = this.props.data.city.name;
+	            var weather = this.props.data.list;
+	
+	            console.log("London Weather report: ", weather[0]);
+	            var time = (0, _convertDate.convertDate)(weather[0].dt_txt);
+	            var temp = (0, _convertTemp.convertTemp)(weather[0].main.temp);
+	            var low = (0, _convertTemp.convertTemp)(weather[0].main.temp_min);
+	            var high = (0, _convertTemp.convertTemp)(weather[0].main.temp_max);
+	            var forecast = weather[0].weather[0].description;
+	
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "center option animated fadeIn subScrn" },
+	                _react2.default.createElement(
+	                    "h3",
+	                    { className: "fontStyle" },
+	                    "Rainy London"
+	                ),
+	                "Five Day Forcast for  ",
+	                location,
+	                _react2.default.createElement("p", null),
+	                time,
+	                _react2.default.createElement("p", null),
+	                _react2.default.createElement(
+	                    "table",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day One"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Two"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Three"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Four"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Five"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        )
+	                    )
+	                )
+	            ); //end return
+	
+	            function handleClick() {} //end handleItemClick
+	
+	        } //end render
+	
+	    }]);
+	
+	    return LondonScrn;
+	}(_react2.default.Component); //end Component
+
+/***/ }),
+/* 213 */
+/*!**************************************!*\
+  !*** ./src/app/utils/convertTemp.js ***!
+  \**************************************/
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.convertTemp = convertTemp;
+	
+	
+	function convertTemp(ktemp) {
+	    console.log("convertTemp: ", ktemp);
+	    ktemp = parseFloat(ktemp);
+	    var val = (ktemp - 273.15) * 1.8 + 32;
+	    val = Math.round(val);
+	    return val;
+	} //end convertTemp
+
+/***/ }),
+/* 214 */
+/*!**************************************!*\
+  !*** ./src/app/utils/convertDate.js ***!
+  \**************************************/
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.convertDate = convertDate;
+	
+	
+	function convertDate(date) {
+	    console.log("convertDate: ", date);
+	    date = date.split("");
+	    console.log("date: ", date);
+	    var d = new Date(date);
+	    return date;
+	}
+
+/***/ }),
+/* 215 */
+/*!*****************************************!*\
+  !*** ./src/app/components/DubaiScrn.js ***!
+  \*****************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.DubaiScrn = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _convertTemp = __webpack_require__(/*! ../utils/convertTemp */ 213);
+	
+	var _convertDate = __webpack_require__(/*! ../utils/convertDate */ 214);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var DubaiScrn = exports.DubaiScrn = function (_React$Component) {
+	    _inherits(DubaiScrn, _React$Component);
+	
+	    function DubaiScrn() {
+	        _classCallCheck(this, DubaiScrn);
+	
+	        var _this = _possibleConstructorReturn(this, (DubaiScrn.__proto__ || Object.getPrototypeOf(DubaiScrn)).call(this));
+	
+	        _this.state = { articles: []
+	        };
+	        return _this;
+	    }
+	
+	    _createClass(DubaiScrn, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {}
+	    }, {
+	        key: "render",
+	        value: function render() {
+	
+	            if (this.props.visible != true) {
+	                console.log("Dubai Screen is off");
+	                return false;
+	            }
+	
+	            console.log("Dubai props data: ", this.props.data);
+	            var location = this.props.data.city.name;
+	            var weather = this.props.data.list;
+	
+	            console.log("Dubai Weather report: ", weather[0]);
+	            var time = (0, _convertDate.convertDate)(weather[0].dt_txt);
+	            var temp = (0, _convertTemp.convertTemp)(weather[0].main.temp);
+	            var low = (0, _convertTemp.convertTemp)(weather[0].main.temp_min);
+	            var high = (0, _convertTemp.convertTemp)(weather[0].main.temp_max);
+	            var forecast = weather[0].weather[0].description;
+	
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "center option animated fadeIn subScrn" },
+	                _react2.default.createElement(
+	                    "h3",
+	                    { className: "fontStyle" },
+	                    " Desert Dubai"
+	                ),
+	                "Five Day Forcast for  ",
+	                location,
+	                _react2.default.createElement("p", null),
+	                time,
+	                _react2.default.createElement("p", null),
+	                _react2.default.createElement(
+	                    "table",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day One"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Two"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Three"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Four"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Five"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        )
+	                    )
+	                )
+	            ); //end return
+	
+	            function handleClick() {} //end handleItemClick
+	
+	        } //end render
+	
+	    }]);
+	
+	    return DubaiScrn;
+	}(_react2.default.Component); //end Component
+
+/***/ }),
+/* 216 */
+/*!*********************************************!*\
+  !*** ./src/app/components/SingaporeScrn.js ***!
+  \*********************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.SingaporeScrn = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _convertTemp = __webpack_require__(/*! ../utils/convertTemp */ 213);
+	
+	var _convertDate = __webpack_require__(/*! ../utils/convertDate */ 214);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SingaporeScrn = exports.SingaporeScrn = function (_React$Component) {
+	    _inherits(SingaporeScrn, _React$Component);
+	
+	    function SingaporeScrn() {
+	        _classCallCheck(this, SingaporeScrn);
+	
+	        var _this = _possibleConstructorReturn(this, (SingaporeScrn.__proto__ || Object.getPrototypeOf(SingaporeScrn)).call(this));
+	
+	        _this.state = {
+	            data: []
+	        };
+	        return _this;
+	    }
+	
+	    _createClass(SingaporeScrn, [{
+	        key: "componentDidMount",
+	        value: function componentDidMount() {}
+	    }, {
+	        key: "render",
+	        value: function render() {
+	
+	            if (this.props.visible != true) {
+	                console.log("Singapore Screen is off");
+	                return false;
+	            }
+	
+	            console.log("Singapore props data: ", this.props.data);
+	            var location = this.props.data.city.name;
+	            var weather = this.props.data.list;
+	
+	            console.log("Dubai Weather report: ", weather[0]);
+	            var time = (0, _convertDate.convertDate)(weather[0].dt_txt);
+	            var temp = (0, _convertTemp.convertTemp)(weather[0].main.temp);
+	            var low = (0, _convertTemp.convertTemp)(weather[0].main.temp_min);
+	            var high = (0, _convertTemp.convertTemp)(weather[0].main.temp_max);
+	            var forecast = weather[0].weather[0].description;
+	
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "center option animated fadeIn subScrn" },
+	                _react2.default.createElement(
+	                    "h3",
+	                    { className: "fontStyle" },
+	                    " Singing Singapore"
+	                ),
+	                "Five Day Forcast for  ",
+	                location,
+	                _react2.default.createElement("p", null),
+	                time,
+	                _react2.default.createElement("p", null),
+	                _react2.default.createElement(
+	                    "table",
+	                    null,
+	                    _react2.default.createElement(
+	                        "tr",
+	                        null,
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day One"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Two"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Three"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Four"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        ),
+	                        _react2.default.createElement(
+	                            "td",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Day Five"
+	                            ),
+	                            "current temp: ",
+	                            temp,
+	                            "\u2109",
+	                            _react2.default.createElement("br", null),
+	                            "high temp: ",
+	                            high,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "low temp: ",
+	                            low,
+	                            " \u2109",
+	                            _react2.default.createElement("br", null),
+	                            "forecast: ",
+	                            forecast
+	                        )
+	                    )
+	                )
+	            ); //end return
+	
+	            function handleClick() {} //end handleItemClick
+	
+	        } //end render
+	
+	    }]);
+	
+	    return SingaporeScrn;
+	}(_react2.default.Component); //end Component
+
+/***/ }),
+/* 217 */
+/*!**************************************!*\
+  !*** ./src/app/utils/getLocalAPI.js ***!
+  \**************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getLocalData = undefined;
+	
+	var _axios = __webpack_require__(/*! axios */ 184);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+	exports.getLocalData = getLocalData;
+	
+	
+	function getLocalData() {
+	  console.log('getLocalData: ');
+	  var url = '' + BASE_URL;
+	  return _axios2.default.get(url).then(function (response) {
+	    return response.data;
+	  });
+	}
+
+/***/ }),
+/* 218 */
+/*!***************************************!*\
+  !*** ./src/app/utils/getLondonAPI.js ***!
+  \***************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getLondonData = undefined;
+	
+	var _axios = __webpack_require__(/*! axios */ 184);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var LONDON_URL = 'http://api.openweathermap.org/data/2.5/forecast?q=London,us&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+	exports.getLondonData = getLondonData;
+	
+	
+	function getLondonData() {
+	  console.log('getLondonData: ');
+	  var url = '' + LONDON_URL;
+	  return _axios2.default.get(url).then(function (response) {
+	    return response.data;
+	  });
+	}
+
+/***/ }),
+/* 219 */
+/*!**************************************!*\
+  !*** ./src/app/utils/getDubaiAPI.js ***!
+  \**************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.getDubaiData = undefined;
+	
+	var _axios = __webpack_require__(/*! axios */ 184);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var DUBAI_URL = 'http://api.openweathermap.org/data/2.5/forecast?q=Dubai,ae&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+	exports.getDubaiData = getDubaiData;
+	
+	
+	function getDubaiData() {
+	    console.log('getDubaiData: ');
+	    var url = '' + DUBAI_URL;
+	    return _axios2.default.get(url).then(function (response) {
+	        return response.data;
+	    });
+	}
+
+/***/ }),
+/* 220 */
+/*!******************************************!*\
+  !*** ./src/app/utils/getSingaporeAPI.js ***!
+  \******************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getSingaporeData = undefined;
+	
+	var _axios = __webpack_require__(/*! axios */ 184);
+	
+	var _axios2 = _interopRequireDefault(_axios);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var SINGAPORE_URL = 'http://api.openweathermap.org/data/2.5/forecast?q=Singapore,my&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+	exports.getSingaporeData = getSingaporeData;
+	
+	
+	function getSingaporeData() {
+	  console.log('getSingaporeData: ');
+	  var url = '' + SINGAPORE_URL;
+	  return _axios2.default.get(url).then(function (response) {
+	    return response.data;
+	  });
+	}
+
+/***/ }),
+/* 221 */
+/*!************************************!*\
+  !*** ./src/app/data/testdata.json ***!
+  \************************************/
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	[{
+	  "cod": "200",
+	  "message": 0.0032,
+	  "cnt": 36,
+	  "list": [{
+	    "dt": 1487246400,
+	    "main": {
+	      "temp": 286.67,
+	      "temp_min": 281.556,
+	      "temp_max": 286.67,
+	      "pressure": 972.73,
+	      "sea_level": 1046.46,
+	      "grnd_level": 972.73,
+	      "humidity": 75,
+	      "temp_kf": 5.11
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.81,
+	      "deg": 247.501
+	    },
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-16 12:00:00"
+	  }, {
+	    "dt": 1487257200,
+	    "main": {
+	      "temp": 285.66,
+	      "temp_min": 281.821,
+	      "temp_max": 285.66,
+	      "pressure": 970.91,
+	      "sea_level": 1044.32,
+	      "grnd_level": 970.91,
+	      "humidity": 70,
+	      "temp_kf": 3.84
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.59,
+	      "deg": 290.501
+	    },
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-16 15:00:00"
+	  }, {
+	    "dt": 1487268000,
+	    "main": {
+	      "temp": 277.05,
+	      "temp_min": 274.498,
+	      "temp_max": 277.05,
+	      "pressure": 970.44,
+	      "sea_level": 1044.7,
+	      "grnd_level": 970.44,
+	      "humidity": 90,
+	      "temp_kf": 2.56
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.41,
+	      "deg": 263.5
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-16 18:00:00"
+	  }, {
+	    "dt": 1487278800,
+	    "main": {
+	      "temp": 272.78,
+	      "temp_min": 271.503,
+	      "temp_max": 272.78,
+	      "pressure": 969.32,
+	      "sea_level": 1044.14,
+	      "grnd_level": 969.32,
+	      "humidity": 80,
+	      "temp_kf": 1.28
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 2.24,
+	      "deg": 205.502
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-16 21:00:00"
+	  }, {
+	    "dt": 1487289600,
+	    "main": {
+	      "temp": 273.341,
+	      "temp_min": 273.341,
+	      "temp_max": 273.341,
+	      "pressure": 968.14,
+	      "sea_level": 1042.96,
+	      "grnd_level": 968.14,
+	      "humidity": 85,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 803,
+	      "main": "Clouds",
+	      "description": "broken clouds",
+	      "icon": "04n"
+	    }],
+	    "clouds": {
+	      "all": 76
+	    },
+	    "wind": {
+	      "speed": 3.59,
+	      "deg": 224.003
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-17 00:00:00"
+	  }, {
+	    "dt": 1487300400,
+	    "main": {
+	      "temp": 275.568,
+	      "temp_min": 275.568,
+	      "temp_max": 275.568,
+	      "pressure": 966.6,
+	      "sea_level": 1041.39,
+	      "grnd_level": 966.6,
+	      "humidity": 89,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 76
+	    },
+	    "wind": {
+	      "speed": 3.77,
+	      "deg": 237.002
+	    },
+	    "rain": {
+	      "3h": 0.32
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-17 03:00:00"
+	  }, {
+	    "dt": 1487311200,
+	    "main": {
+	      "temp": 276.478,
+	      "temp_min": 276.478,
+	      "temp_max": 276.478,
+	      "pressure": 966.45,
+	      "sea_level": 1041.21,
+	      "grnd_level": 966.45,
+	      "humidity": 97,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 501,
+	      "main": "Rain",
+	      "description": "moderate rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 92
+	    },
+	    "wind": {
+	      "speed": 3.81,
+	      "deg": 268.005
+	    },
+	    "rain": {
+	      "3h": 4.9
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-17 06:00:00"
+	  }, {
+	    "dt": 1487322000,
+	    "main": {
+	      "temp": 276.67,
+	      "temp_min": 276.67,
+	      "temp_max": 276.67,
+	      "pressure": 967.41,
+	      "sea_level": 1041.95,
+	      "grnd_level": 967.41,
+	      "humidity": 100,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10d"
+	    }],
+	    "clouds": {
+	      "all": 64
+	    },
+	    "wind": {
+	      "speed": 2.6,
+	      "deg": 266.504
+	    },
+	    "rain": {
+	      "3h": 1.37
+	    },
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-17 09:00:00"
+	  }, {
+	    "dt": 1487332800,
+	    "main": {
+	      "temp": 278.253,
+	      "temp_min": 278.253,
+	      "temp_max": 278.253,
+	      "pressure": 966.98,
+	      "sea_level": 1040.89,
+	      "grnd_level": 966.98,
+	      "humidity": 95,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10d"
+	    }],
+	    "clouds": {
+	      "all": 92
+	    },
+	    "wind": {
+	      "speed": 3.17,
+	      "deg": 261.501
+	    },
+	    "rain": {
+	      "3h": 0.12
+	    },
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-17 12:00:00"
+	  }, {
+	    "dt": 1487343600,
+	    "main": {
+	      "temp": 276.455,
+	      "temp_min": 276.455,
+	      "temp_max": 276.455,
+	      "pressure": 966.38,
+	      "sea_level": 1040.17,
+	      "grnd_level": 966.38,
+	      "humidity": 99,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10d"
+	    }],
+	    "clouds": {
+	      "all": 92
+	    },
+	    "wind": {
+	      "speed": 3.21,
+	      "deg": 268.001
+	    },
+	    "rain": {
+	      "3h": 2.12
+	    },
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-17 15:00:00"
+	  }, {
+	    "dt": 1487354400,
+	    "main": {
+	      "temp": 275.639,
+	      "temp_min": 275.639,
+	      "temp_max": 275.639,
+	      "pressure": 966.39,
+	      "sea_level": 1040.65,
+	      "grnd_level": 966.39,
+	      "humidity": 95,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 88
+	    },
+	    "wind": {
+	      "speed": 3.17,
+	      "deg": 258.001
+	    },
+	    "rain": {
+	      "3h": 0.7
+	    },
+	    "snow": {
+	      "3h": 0.0775
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-17 18:00:00"
+	  }, {
+	    "dt": 1487365200,
+	    "main": {
+	      "temp": 275.459,
+	      "temp_min": 275.459,
+	      "temp_max": 275.459,
+	      "pressure": 966.3,
+	      "sea_level": 1040.8,
+	      "grnd_level": 966.3,
+	      "humidity": 96,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 88
+	    },
+	    "wind": {
+	      "speed": 3.71,
+	      "deg": 265.503
+	    },
+	    "rain": {
+	      "3h": 1.16
+	    },
+	    "snow": {
+	      "3h": 0.075
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-17 21:00:00"
+	  }, {
+	    "dt": 1487376000,
+	    "main": {
+	      "temp": 275.035,
+	      "temp_min": 275.035,
+	      "temp_max": 275.035,
+	      "pressure": 966.43,
+	      "sea_level": 1041.02,
+	      "grnd_level": 966.43,
+	      "humidity": 99,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 92
+	    },
+	    "wind": {
+	      "speed": 3.56,
+	      "deg": 273.5
+	    },
+	    "rain": {
+	      "3h": 1.37
+	    },
+	    "snow": {
+	      "3h": 0.1525
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-18 00:00:00"
+	  }, {
+	    "dt": 1487386800,
+	    "main": {
+	      "temp": 274.965,
+	      "temp_min": 274.965,
+	      "temp_max": 274.965,
+	      "pressure": 966.36,
+	      "sea_level": 1041.17,
+	      "grnd_level": 966.36,
+	      "humidity": 97,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 88
+	    },
+	    "wind": {
+	      "speed": 2.66,
+	      "deg": 285.502
+	    },
+	    "rain": {
+	      "3h": 0.79
+	    },
+	    "snow": {
+	      "3h": 0.52
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-18 03:00:00"
+	  }, {
+	    "dt": 1487397600,
+	    "main": {
+	      "temp": 274.562,
+	      "temp_min": 274.562,
+	      "temp_max": 274.562,
+	      "pressure": 966.75,
+	      "sea_level": 1041.57,
+	      "grnd_level": 966.75,
+	      "humidity": 98,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10n"
+	    }],
+	    "clouds": {
+	      "all": 88
+	    },
+	    "wind": {
+	      "speed": 1.46,
+	      "deg": 276.5
+	    },
+	    "rain": {
+	      "3h": 0.08
+	    },
+	    "snow": {
+	      "3h": 0.06
+	    },
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-18 06:00:00"
+	  }, {
+	    "dt": 1487408400,
+	    "main": {
+	      "temp": 275.648,
+	      "temp_min": 275.648,
+	      "temp_max": 275.648,
+	      "pressure": 967.21,
+	      "sea_level": 1041.74,
+	      "grnd_level": 967.21,
+	      "humidity": 99,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 500,
+	      "main": "Rain",
+	      "description": "light rain",
+	      "icon": "10d"
+	    }],
+	    "clouds": {
+	      "all": 56
+	    },
+	    "wind": {
+	      "speed": 1.5,
+	      "deg": 251.008
+	    },
+	    "rain": {
+	      "3h": 0.02
+	    },
+	    "snow": {
+	      "3h": 0.03
+	    },
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-18 09:00:00"
+	  }, {
+	    "dt": 1487419200,
+	    "main": {
+	      "temp": 277.927,
+	      "temp_min": 277.927,
+	      "temp_max": 277.927,
+	      "pressure": 966.06,
+	      "sea_level": 1039.98,
+	      "grnd_level": 966.06,
+	      "humidity": 95,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "02d"
+	    }],
+	    "clouds": {
+	      "all": 8
+	    },
+	    "wind": {
+	      "speed": 0.86,
+	      "deg": 244.004
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-18 12:00:00"
+	  }, {
+	    "dt": 1487430000,
+	    "main": {
+	      "temp": 278.367,
+	      "temp_min": 278.367,
+	      "temp_max": 278.367,
+	      "pressure": 964.57,
+	      "sea_level": 1038.35,
+	      "grnd_level": 964.57,
+	      "humidity": 89,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "02d"
+	    }],
+	    "clouds": {
+	      "all": 8
+	    },
+	    "wind": {
+	      "speed": 1.62,
+	      "deg": 79.5024
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-18 15:00:00"
+	  }, {
+	    "dt": 1487440800,
+	    "main": {
+	      "temp": 273.797,
+	      "temp_min": 273.797,
+	      "temp_max": 273.797,
+	      "pressure": 964.13,
+	      "sea_level": 1038.48,
+	      "grnd_level": 964.13,
+	      "humidity": 91,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 2.42,
+	      "deg": 77.0026
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-18 18:00:00"
+	  }, {
+	    "dt": 1487451600,
+	    "main": {
+	      "temp": 271.239,
+	      "temp_min": 271.239,
+	      "temp_max": 271.239,
+	      "pressure": 963.39,
+	      "sea_level": 1038.21,
+	      "grnd_level": 963.39,
+	      "humidity": 93,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 2.42,
+	      "deg": 95.5017
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-18 21:00:00"
+	  }, {
+	    "dt": 1487462400,
+	    "main": {
+	      "temp": 269.553,
+	      "temp_min": 269.553,
+	      "temp_max": 269.553,
+	      "pressure": 962.39,
+	      "sea_level": 1037.44,
+	      "grnd_level": 962.39,
+	      "humidity": 92,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.96,
+	      "deg": 101.004
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-19 00:00:00"
+	  }, {
+	    "dt": 1487473200,
+	    "main": {
+	      "temp": 268.198,
+	      "temp_min": 268.198,
+	      "temp_max": 268.198,
+	      "pressure": 961.28,
+	      "sea_level": 1036.51,
+	      "grnd_level": 961.28,
+	      "humidity": 84,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.06,
+	      "deg": 121.5
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-19 03:00:00"
+	  }, {
+	    "dt": 1487484000,
+	    "main": {
+	      "temp": 267.295,
+	      "temp_min": 267.295,
+	      "temp_max": 267.295,
+	      "pressure": 961.16,
+	      "sea_level": 1036.45,
+	      "grnd_level": 961.16,
+	      "humidity": 86,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.17,
+	      "deg": 155.005
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-19 06:00:00"
+	  }, {
+	    "dt": 1487494800,
+	    "main": {
+	      "temp": 272.956,
+	      "temp_min": 272.956,
+	      "temp_max": 272.956,
+	      "pressure": 962.03,
+	      "sea_level": 1036.85,
+	      "grnd_level": 962.03,
+	      "humidity": 84,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.66,
+	      "deg": 195.002
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-19 09:00:00"
+	  }, {
+	    "dt": 1487505600,
+	    "main": {
+	      "temp": 277.422,
+	      "temp_min": 277.422,
+	      "temp_max": 277.422,
+	      "pressure": 962.23,
+	      "sea_level": 1036.06,
+	      "grnd_level": 962.23,
+	      "humidity": 89,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.32,
+	      "deg": 357.003
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-19 12:00:00"
+	  }, {
+	    "dt": 1487516400,
+	    "main": {
+	      "temp": 277.984,
+	      "temp_min": 277.984,
+	      "temp_max": 277.984,
+	      "pressure": 962.15,
+	      "sea_level": 1035.86,
+	      "grnd_level": 962.15,
+	      "humidity": 87,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.58,
+	      "deg": 48.5031
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-19 15:00:00"
+	  }, {
+	    "dt": 1487527200,
+	    "main": {
+	      "temp": 272.459,
+	      "temp_min": 272.459,
+	      "temp_max": 272.459,
+	      "pressure": 963.31,
+	      "sea_level": 1037.81,
+	      "grnd_level": 963.31,
+	      "humidity": 90,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.16,
+	      "deg": 75.5042
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-19 18:00:00"
+	  }, {
+	    "dt": 1487538000,
+	    "main": {
+	      "temp": 269.473,
+	      "temp_min": 269.473,
+	      "temp_max": 269.473,
+	      "pressure": 964.65,
+	      "sea_level": 1039.76,
+	      "grnd_level": 964.65,
+	      "humidity": 83,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.12,
+	      "deg": 174.002
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-19 21:00:00"
+	  }, {
+	    "dt": 1487548800,
+	    "main": {
+	      "temp": 268.793,
+	      "temp_min": 268.793,
+	      "temp_max": 268.793,
+	      "pressure": 965.92,
+	      "sea_level": 1041.32,
+	      "grnd_level": 965.92,
+	      "humidity": 80,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 2.11,
+	      "deg": 207.502
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-20 00:00:00"
+	  }, {
+	    "dt": 1487559600,
+	    "main": {
+	      "temp": 268.106,
+	      "temp_min": 268.106,
+	      "temp_max": 268.106,
+	      "pressure": 966.4,
+	      "sea_level": 1042.18,
+	      "grnd_level": 966.4,
+	      "humidity": 85,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.67,
+	      "deg": 191.001
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-20 03:00:00"
+	  }, {
+	    "dt": 1487570400,
+	    "main": {
+	      "temp": 267.655,
+	      "temp_min": 267.655,
+	      "temp_max": 267.655,
+	      "pressure": 967.4,
+	      "sea_level": 1043.43,
+	      "grnd_level": 967.4,
+	      "humidity": 84,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01n"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 1.61,
+	      "deg": 194.001
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-20 06:00:00"
+	  }, {
+	    "dt": 1487581200,
+	    "main": {
+	      "temp": 273.75,
+	      "temp_min": 273.75,
+	      "temp_max": 273.75,
+	      "pressure": 968.84,
+	      "sea_level": 1044.23,
+	      "grnd_level": 968.84,
+	      "humidity": 83,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 2.49,
+	      "deg": 208.5
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-20 09:00:00"
+	  }, {
+	    "dt": 1487592000,
+	    "main": {
+	      "temp": 279.302,
+	      "temp_min": 279.302,
+	      "temp_max": 279.302,
+	      "pressure": 968.37,
+	      "sea_level": 1042.52,
+	      "grnd_level": 968.37,
+	      "humidity": 83,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 2.46,
+	      "deg": 252.001
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-20 12:00:00"
+	  }, {
+	    "dt": 1487602800,
+	    "main": {
+	      "temp": 279.343,
+	      "temp_min": 279.343,
+	      "temp_max": 279.343,
+	      "pressure": 967.9,
+	      "sea_level": 1041.64,
+	      "grnd_level": 967.9,
+	      "humidity": 81,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 800,
+	      "main": "Clear",
+	      "description": "clear sky",
+	      "icon": "01d"
+	    }],
+	    "clouds": {
+	      "all": 0
+	    },
+	    "wind": {
+	      "speed": 3.21,
+	      "deg": 268.001
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "d"
+	    },
+	    "dt_txt": "2017-02-20 15:00:00"
+	  }, {
+	    "dt": 1487613600,
+	    "main": {
+	      "temp": 274.443,
+	      "temp_min": 274.443,
+	      "temp_max": 274.443,
+	      "pressure": 968.19,
+	      "sea_level": 1042.66,
+	      "grnd_level": 968.19,
+	      "humidity": 88,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 801,
+	      "main": "Clouds",
+	      "description": "few clouds",
+	      "icon": "02n"
+	    }],
+	    "clouds": {
+	      "all": 24
+	    },
+	    "wind": {
+	      "speed": 3.27,
+	      "deg": 257.501
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-20 18:00:00"
+	  }, {
+	    "dt": 1487624400,
+	    "main": {
+	      "temp": 272.424,
+	      "temp_min": 272.424,
+	      "temp_max": 272.424,
+	      "pressure": 968.38,
+	      "sea_level": 1043.17,
+	      "grnd_level": 968.38,
+	      "humidity": 85,
+	      "temp_kf": 0
+	    },
+	    "weather": [{
+	      "id": 801,
+	      "main": "Clouds",
+	      "description": "few clouds",
+	      "icon": "02n"
+	    }],
+	    "clouds": {
+	      "all": 20
+	    },
+	    "wind": {
+	      "speed": 3.57,
+	      "deg": 255.503
+	    },
+	    "rain": {},
+	    "snow": {},
+	    "sys": {
+	      "pod": "n"
+	    },
+	    "dt_txt": "2017-02-20 21:00:00"
+	  }],
+	  "city": {
+	    "id": 6940463,
+	    "name": "Altstadt",
+	    "coord": {
+	      "lat": 48.137,
+	      "lon": 11.5752
+	    },
+	    "country": "none"
+	  }
+	}];
 
 /***/ })
 /******/ ]);

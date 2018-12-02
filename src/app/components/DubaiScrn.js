@@ -43,6 +43,7 @@ export class DubaiScrn extends React.Component {
                         <p></p>
 
                     <table>
+                      <tbody>
                         <tr>
                            
                         <td>
@@ -81,6 +82,7 @@ export class DubaiScrn extends React.Component {
                                 forecast: {forecast}
                             </td>
                         </tr>
+                        </tbody>
                     </table>
 
                   </div>

@@ -25,6 +25,22 @@ export class LondonScrn extends React.Component {
             var location = this.props.data.city.name;
             var weather = this.props.data.list;
 
+            let dataArr = [];
+            
+            for (var i = 0 ; i < 5 ;++i ) {
+                var infoObj = {};
+                infoObj.time = convertDate(weather[i].dt_txt);
+                infoObj.temp =  convertTemp (weather[i].main.temp);
+                infoObj.low =  convertTemp (weather[i].main.temp_min);
+                infoObj.high =  convertTemp (weather[i].main.temp_max);
+                infoObj.forecast = weather[0].weather[0].description;
+                console.log("Our Info", infoObj );
+                dataArr.push(infoObj);
+            }
+ 
+             console.log("Dubai Weather report array: ", dataArr  );
+
+
             console.log("London Weather report: ", weather[0] );
             var time = convertDate(weather[0].dt_txt);
             var temp =  convertTemp (weather[0].main.temp);
@@ -42,46 +58,49 @@ export class LondonScrn extends React.Component {
                         <p></p>
 
                     <table>
-                        <tr>
-                           
+                      <tbody>
+                        <tr>                
                         <td>
-                        <th>Day One</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
+                        <th>Day One</th>   
+                                current temp: {dataArr[0].temp}&#8457;<br/>
+                                high temp: {dataArr[0].high} &#8457;<br/>
+                                low temp: {dataArr[0].low} &#8457;<br/>
+                                forecast: {dataArr[0].forecast}
                             </td>
                             <td>
                             <th>Day Two</th>
-                                current temp: {temp} &#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
+                                current temp: {dataArr[1].temp} &#8457;<br/>
+                                high temp: {dataArr[1].high} &#8457;<br/>
+                                low temp: {dataArr[1].low} &#8457;<br/>
+                                forecast: {dataArr[1].forecast}
                             </td>
                             <td>
                             <th>Day Three</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
+                                current temp: {dataArr[2].temp}&#8457;<br/>
+                                high temp: {dataArr[2].high} &#8457;<br/>
+                                low temp: {dataArr[2].low} &#8457;<br/>
+                                forecast: {dataArr[2].forecast}
                             </td>
                             <td>
                             <th>Day Four</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
+                                current temp: {dataArr[3].temp}&#8457;<br/>
+                                high temp: {dataArr[3].high} &#8457;<br/>
+                                low temp: {dataArr[3].low} &#8457;<br/>
+                                forecast: {dataArr[3].forecast}
                             </td>
                             <td>
                             <th>Day Five</th>
-                                current temp: {temp}&#8457;<br/>
-                                high temp: {high} &#8457;<br/>
-                                low temp: {low} &#8457;<br/>
-                                forecast: {forecast}
+                                current temp: {dataArr[4].temp}&#8457;<br/>
+                                high temp: {dataArr[4].high} &#8457;<br/>
+                                low temp: {dataArr[4].low} &#8457;<br/>
+                                forecast: {dataArr[4].forecast}
                             </td>
                         </tr>
+                        </tbody>
                     </table>
-
+                    <div>
+                        
+                    </div>
                   </div>
               )//end return
       
