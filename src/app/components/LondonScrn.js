@@ -29,7 +29,7 @@ export class LondonScrn extends React.Component {
             let dataArr = [];
 
             dataArr = getDataArray(weather);
-            let time = convertDate(weather[0].dt_txt);
+            const time = convertDate(weather[0].dt_txt);
              
               return (
                   <div className="center option animated fadeIn subScrn">

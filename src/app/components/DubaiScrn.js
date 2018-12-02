@@ -21,15 +21,15 @@ export class DubaiScrn extends React.Component {
                return false;
              }
 
-             let location = this.props.data.city.name;
-             let weather = this.props.data.list;
+            let location = this.props.data.city.name;
+            let weather = this.props.data.list;
 
-             let num = 0;
-             let dataArr = [];
+            let num = 0;
+            let dataArr = [];
 
-             dataArr = getDataArray(weather);
+            dataArr = getDataArray(weather);
              
-            let time = convertDate(weather[0].dt_txt);
+            const time = convertDate(weather[0].dt_txt);
 
               return (
                   <div className="center option animated fadeIn subScrn">
@@ -41,7 +41,7 @@ export class DubaiScrn extends React.Component {
                         {time}
                         <p></p>
 
-                    {
+                        {
                              dataArr.map(function(resultArr, num) {
                                     ++num;
                                     return  <div key={num} >

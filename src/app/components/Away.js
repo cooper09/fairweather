@@ -25,17 +25,15 @@ export class AwayScrn extends React.Component {
                return false;
              }
 
-            var displayObj = {
+            const displayObj = {
                   london: this.props.londonData,
                   dubai: this.props.dubaiData,
                   singapore: this.props.singaporeData
               }
-       
-              console.log("Our Away Data: ", displayObj );
 
               return (
                   <div className="center option animated fadeIn mainScrn">
-                      <h3 className="fontStyle">Lands Far Far Away</h3>
+                      <h3 className="fontStyle">Lands Far Far Away</h3><button onClick={this.props.close} className="right">Done</button>
                       <button  onClick={()=> this.setState({  london: true, dubai: false, singapore: false })}>London</button>
                       <button  onClick={()=> this.setState({  london: false, dubai: true, singapore: false })}>Dubai</button>
                       <button  onClick={()=> this.setState({  london: false, dubai: false, singapore: true })}>Singapore</button>

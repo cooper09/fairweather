@@ -23,15 +23,14 @@ export class SingaporeScrn extends React.Component {
                return false;
              }
 
-            console.log("Singapore props data: ", this.props.data );
-            var location = this.props.data.city.name;
-            var weather = this.props.data.list;
+            let location = this.props.data.city.name;
+            let weather = this.props.data.list;
             
             let num = 0;
             let dataArr = [];
 
             dataArr = getDataArray(weather);
-            let time = convertDate(weather[0].dt_txt);
+            const time = convertDate(weather[0].dt_txt);
 
               return (
                   <div className="center option animated fadeIn subScrn">

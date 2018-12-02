@@ -63,7 +63,8 @@ class App extends React.Component {
 		this.getLondon();
 		this.getDubai();
 		this.getSingapore();
-      }
+	  }
+	  
 
 	render() {
 
@@ -74,18 +75,21 @@ class App extends React.Component {
 				<button onClick={getLocation.bind(this)}>Where you are</button>	
 				<button onClick={getAway.bind(this)}>Where you wanna be</button>	
 
-				<LocalScrn visible={this.state.local}  localData={this.state.localData }/>
-				<AwayScrn visible={this.state.away} londonData={this.state.londonData} dubaiData={this.state.dubaiData} singaporeData={this.state.singaporeData }/>		
+				<LocalScrn visible={this.state.local}  localData={this.state.localData} close={closeMe.bind(this) }/>
+				<AwayScrn visible={this.state.away} londonData={this.state.londonData} dubaiData={this.state.dubaiData} singaporeData={this.state.singaporeData } close={closeMe.bind(this)}/>		
 			</div>
 			)
 
+			function closeMe() {
+				this.setState({  local: false, away: false });
+			}
+		
 			function getAway() {
 				console.log("And the boyz from Brazil??");
 				this.setState({  local: false, away: true });
 			}//end getAway
 
 			function getLocation() {
-				console.log("we are at ground zero");
 				
 				navigator.geolocation.getCurrentPosition(
 					function success(position) {
@@ -110,18 +114,6 @@ class App extends React.Component {
 				this.setState({  local: true, away: false });
 					
 			}//end getLocation
-
-/*
-function getLocalData(coords) {
-  console.log('getLocalData: ', coords );
-  const lat = coords.latitude;
-  const long = coords.longitude;
-
-  const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+long+'&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
-  const url = `${BASE_URL}` ;
-  //console.log('Dirt Cheap: ', axios.get(url).then(response => response.data) )
-  return axios.get(url).then(response => response.data);
-}  */
 			
 	}//end render
 }//end App class

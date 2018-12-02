@@ -31,11 +31,11 @@ export class LocalScrn extends React.Component {
 
              dataArr = getDataArray(weather);
              
-            var time = convertDate(weather[0].dt_txt);
+            const time = convertDate(weather[0].dt_txt);
 
               return (
                   <div className="center option animated fadeIn mainScrn">
-                      <h3 className="fontStyle"> Local Juice</h3>
+                      <h3 className="fontStyle"> Local Juice</h3><button onClick={this.props.close} className="right">Done</button>
 
                       Five Day Forcast for  {location}
                         <p></p>
