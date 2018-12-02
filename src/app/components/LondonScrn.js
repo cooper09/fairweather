@@ -24,7 +24,8 @@ export class LondonScrn extends React.Component {
             console.log("London props data: ", this.props.data );
             var location = this.props.data.city.name;
             var weather = this.props.data.list;
-
+            
+            let num = 0;
             let dataArr = [];
             
             for (var i = 0 ; i < 5 ;++i ) {
@@ -40,13 +41,7 @@ export class LondonScrn extends React.Component {
  
              console.log("Dubai Weather report array: ", dataArr  );
 
-
-            console.log("London Weather report: ", weather[0] );
-            var time = convertDate(weather[0].dt_txt);
-            var temp =  convertTemp (weather[0].main.temp);
-            var low =  convertTemp (weather[0].main.temp_min);
-            var high =  convertTemp (weather[0].main.temp_max);
-            var forecast = weather[0].weather[0].description;
+             var time = convertDate(weather[0].dt_txt);
              
               return (
                   <div className="center option animated fadeIn subScrn">
@@ -98,9 +93,21 @@ export class LondonScrn extends React.Component {
                         </tr>
                         </tbody>
                     </table>
-                    <div>
                         
-                    </div>
+                        {
+                             dataArr.map(function(resultArr, num) {
+                                    ++num;
+                                    return  <div key={num} >
+                                                <span className= "infoBox">
+                                                Current Temp: {resultArr.temp}<br/>
+                                                High Temp: {resultArr.high}<br/>
+                                                Low Temp: {resultArr.low}<br/>
+                                                Forecast: {resultArr.forecast}<br/>
+                                                </span>
+                                            </div>
+                                }) }
+                        }
+
                   </div>
               )//end return
       
