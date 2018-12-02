@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
+const BASE_URL = 'http://api.openweathermap.org/data/2.5/forecast?q=new+york,us&APPID=b0dc9601e28c24ab8329f0055b9b5a2b';
 export {getLocalData};
 
 function getLocalData() {

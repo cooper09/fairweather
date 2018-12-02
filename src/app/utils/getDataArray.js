@@ -3,7 +3,7 @@ import { convertDate } from "../utils/convertDate";
 export {getDataArray};
     
 function getDataArray (arr) {
-    console.log("getDataArray: ", arr );
+    //console.log("getDataArray: ", arr );
     var infoArr = [];
     for (var i = 0 ; i < 5 ;++i ) {
       var infoObj = {};

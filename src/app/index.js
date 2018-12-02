@@ -11,14 +11,12 @@ import { getLondonData } from "./utils/getLondonAPI";
 import { getDubaiData } from "./utils/getDubaiAPI";
 import { getSingaporeData } from "./utils/getSingaporeAPI";
 
-import  testdata  from "./data/testdata.json";
-
 class App extends React.Component {
 
 	constructor(props){
 		super();
 		this.state = {
-			local:true,
+			local:false,
 			away:false,
 			localData: [],
 			londonData: [],
@@ -30,7 +28,7 @@ class App extends React.Component {
 	getLocation() {
 		getLocalData().then (
 			(localData) => {
-				console.log("Our Local Data: ", localData );
+				console.log("Index.js - Our Local Data: ", localData );
 				this.setState({localData})
 			});
 
@@ -68,8 +66,6 @@ class App extends React.Component {
       }
 
 	render() {
-
-		console.log("local data: ", testdata );
 
 		return (
 			<div className="container">
