@@ -35,8 +35,7 @@ export class AwayScrn extends React.Component {
 
               return (
                   <div className="center option animated fadeIn mainScrn">
-                      <h3 className="fontStyle"> Second Banana</h3>
-                      Lands Far Far Away!
+                      <h3 className="fontStyle">Lands Far Far Away</h3>
                       <button  onClick={()=> this.setState({  london: true, dubai: false, singapore: false })}>London</button>
                       <button  onClick={()=> this.setState({  london: false, dubai: true, singapore: false })}>Dubai</button>
                       <button  onClick={()=> this.setState({  london: false, dubai: false, singapore: true })}>Singapore</button>

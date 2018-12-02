@@ -47,30 +47,35 @@ export class SingaporeScrn extends React.Component {
                         <tr>
                            
                         <td>
+                        <th>Day One</th>
                                 current temp: {temp}&#8457;<br/>
                                 high temp: {high} &#8457;<br/>
                                 low temp: {low} &#8457;<br/>
                                 forecast: {forecast}
                             </td>
                             <td>
+                            <th>Day Two</th>
                                 current temp: {temp} &#8457;<br/>
                                 high temp: {high} &#8457;<br/>
                                 low temp: {low} &#8457;<br/>
                                 forecast: {forecast}
                             </td>
                             <td>
+                            <th>Day Three</th>
                                 current temp: {temp}&#8457;<br/>
                                 high temp: {high} &#8457;<br/>
                                 low temp: {low} &#8457;<br/>
                                 forecast: {forecast}
                             </td>
                             <td>
+                            <th>Day Four</th>
                                 current temp: {temp}&#8457;<br/>
                                 high temp: {high} &#8457;<br/>
                                 low temp: {low} &#8457;<br/>
                                 forecast: {forecast}
                             </td>
                             <td>
+                            <th>Day Five</th>
                                 current temp: {temp}&#8457;<br/>
                                 high temp: {high} &#8457;<br/>
                                 low temp: {low} &#8457;<br/>
