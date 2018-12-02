@@ -12,7 +12,7 @@ html {
 
 /* line 9, ../sass/partials/_main.sass */
 body {
-  background: #333;
+  background: blue;
   padding: 1em;
 }
 
@@ -34,43 +34,9 @@ button {
   color: #ccc;
   cursor: pointer;
 }
-table {
-  background: pink;
-  width: 100%;
-}
-table td {
-  padding: 0.5em;
-}
+
 /* line 28, ../sass/partials/_main.sass */
 .special {
   color: yellow;
   font-family: arial, sans-serif;
-}
-
-.mainScrn {
-  height: 400px; 
-  width: 100%;
-  background: #eee;
-  padding: 1em;
-}
-.subScrn {
-  height: 300px;
-  width: 100%;
-  background: #ccc;
-  padding: 1em;
-}
-
-.infoBox {
-  background: aqua;
-  margin: 1em;
-  float: left;
-}
-@media (max-width: 365px) {
-  infoBox  {
-    width: 100%;
-  }
-}
-
-.right {
-  float: right;
 }
