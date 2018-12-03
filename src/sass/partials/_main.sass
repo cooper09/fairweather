@@ -7,15 +7,16 @@ html
   height: 100%
 
 body
-  //background: url('https://66.media.tumblr.com/d51a2a2502f70238adbb0c242c4e89dd/tumblr_ocqdob8xcZ1s8iqo7o1_1280.gif') no-repeat
   background: url('https://media.giphy.com/media/26u6dryuZH98z5KuY/giphy.gif') no-repeat
   background-size: 100% 100%
   //background: #ccc
   padding: 1em
   font-family: arial, sans-serif
+  +at-breakpoint($phone)
+    background: #6dbeec
 
 h1
-  color: #333
+  color: #0d004c
   font-family: arial, sans-serif
 
 p
@@ -23,16 +24,17 @@ p
   font-family: arial, sans-serif
 
 button
-  background: #666
-  color: #ccc
+  background: #0d004c
+  color: #0edce9
   cursor: pointer
   padding: 0.5em
   font-size: 1.2em
+  margin-right: 1em
 
 .mainScrn
   +span-columns(12)
-  background: #333
-  color: #ccc
+  background: #2230b5
+  color: #0edce9
   padding: 1em
   cursor: pointer
   margin-left: auto
@@ -44,7 +46,7 @@ button
 
 .subScrn
   +span-columns(12)
-  background: #ccc
+  background: #129bd1
   color: #333
   padding: 1em
   cursor: pointer
@@ -58,7 +60,7 @@ button
 .infoBox
   padding: 1em
   float: left
-  background: #ccc
+  background: #6dbeec
   margin: 1em
   color: #333
   border: solid 1px #333

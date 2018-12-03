@@ -17,36 +17,43 @@ body {
   padding: 1em;
   font-family: arial, sans-serif;
 }
+@media (max-width: 651px) {
+  /* line 9, ../sass/partials/_main.sass */
+  body {
+    background: #6dbeec;
+  }
+}
 
-/* line 17, ../sass/partials/_main.sass */
+/* line 18, ../sass/partials/_main.sass */
 h1 {
-  color: #333;
+  color: #0d004c;
   font-family: arial, sans-serif;
 }
 
-/* line 21, ../sass/partials/_main.sass */
+/* line 22, ../sass/partials/_main.sass */
 p {
   color: #ccc;
   font-family: arial, sans-serif;
 }
 
-/* line 25, ../sass/partials/_main.sass */
+/* line 26, ../sass/partials/_main.sass */
 button {
-  background: #666;
-  color: #ccc;
+  background: #0d004c;
+  color: #0edce9;
   cursor: pointer;
   padding: 0.5em;
   font-size: 1.2em;
+  margin-right: 1em;
 }
 
-/* line 32, ../sass/partials/_main.sass */
+/* line 34, ../sass/partials/_main.sass */
 .mainScrn {
   width: 100%;
   float: left;
   margin-right: 1.69492%;
   display: inline;
-  background: #333;
-  color: #ccc;
+  background: #2230b5;
+  color: #0edce9;
   padding: 1em;
   cursor: pointer;
   margin-left: auto;
@@ -55,7 +62,7 @@ button {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 651px) {
-  /* line 32, ../sass/partials/_main.sass */
+  /* line 34, ../sass/partials/_main.sass */
   .mainScrn {
     width: 100%;
     float: left;
@@ -63,13 +70,13 @@ button {
   }
 }
 
-/* line 45, ../sass/partials/_main.sass */
+/* line 47, ../sass/partials/_main.sass */
 .subScrn {
   width: 100%;
   float: left;
   margin-right: 1.69492%;
   display: inline;
-  background: #ccc;
+  background: #129bd1;
   color: #333;
   padding: 1em;
   cursor: pointer;
@@ -79,7 +86,7 @@ button {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 @media (max-width: 651px) {
-  /* line 45, ../sass/partials/_main.sass */
+  /* line 47, ../sass/partials/_main.sass */
   .subScrn {
     width: 100%;
     float: left;
@@ -87,17 +94,17 @@ button {
   }
 }
 
-/* line 58, ../sass/partials/_main.sass */
+/* line 60, ../sass/partials/_main.sass */
 .infoBox {
   padding: 1em;
   float: left;
-  background: #ccc;
+  background: #6dbeec;
   margin: 1em;
   color: #333;
   border: solid 1px #333;
 }
 @media (max-width: 651px) {
-  /* line 58, ../sass/partials/_main.sass */
+  /* line 60, ../sass/partials/_main.sass */
   .infoBox {
     width: 83.05085%;
     float: left;
@@ -105,12 +112,12 @@ button {
   }
 }
 
-/* line 68, ../sass/partials/_main.sass */
+/* line 70, ../sass/partials/_main.sass */
 .right {
   float: right;
 }
 
-/* line 71, ../sass/partials/_main.sass */
+/* line 73, ../sass/partials/_main.sass */
 .stinky {
   font-size: 0.6em;
   position: fixed;
