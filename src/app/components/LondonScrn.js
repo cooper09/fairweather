@@ -46,10 +46,10 @@ export class LondonScrn extends React.Component {
                                                 <span className= "infoBox">
                                                 Day {num}<br/>
                                                 <img src={resultArr.icon} /> <br/>
-                                                Temp: {resultArr.temp}<br/>
-                                                High Temp: {resultArr.high}<br/>
-                                                Low Temp: {resultArr.low}<br/>
-                                                Forecast: {resultArr.forecast}<br/>
+                                                Temp: {resultArr.temp} &#8457;<br/>
+                                                High Temp: {resultArr.high} &#8457;<br/>
+                                                Low Temp: {resultArr.low} &#8457;<br/>
+                                                Forecast: {resultArr.forecast} <br/>
                                                 </span>
 
 
