@@ -7,9 +7,9 @@ To review the App live: http://www.cooper.industrialrd.com/fairweather/
 
 # Usage
 
-To build the app simply clone the repository <git repo>
+To build the app simply clone the repository git@github.com:cooper09/fairweather.git
 
-cd into the directory
+cd into the "fairweather" directory
 
 $ npm start
 
@@ -27,3 +27,4 @@ Only covered the basics in terms of consuming API data and displaying it in a us
 
 In any case, enjoy!
 
+P.S. This version is also responsive so feel free to check it out on your phone or ipad as well. 
